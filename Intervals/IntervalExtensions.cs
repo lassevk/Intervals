@@ -224,7 +224,7 @@ namespace Intervals
         /// <para>- or -</para>
         /// <para><paramref name="interval2"/> is <c>null</c>.</para>
         /// </exception>
-        public static bool Overlaps<T>(this IInterval<T> interval1, IInterval<T> interval2) where T : IComparable<T>
+        public static bool IsOverlapping<T>(this IInterval<T> interval1, IInterval<T> interval2) where T : IComparable<T>
         {
             if (interval1 == null)
                 throw new ArgumentNullException("interval1");
