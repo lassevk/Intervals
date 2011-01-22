@@ -66,6 +66,7 @@
     <Compile Include="IsOverlappingTests.cs" />
     <Compile Include="NullableComparable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IntervalCollectionTests.cs" />
     <Compile Include="TestCaseTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>

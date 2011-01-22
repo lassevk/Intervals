@@ -12,24 +12,28 @@ namespace Intervals.Tests
             var result = new List<IInterval<int>>();
             int index = 0;
             int intervalStart = -1;
+            int position = 0;
 
             while (index < input.Length)
             {
-                if (input[index] == '|')
+                if (input[index] == '?')
+                    position = -1; // will be increased to 0 at end of loop
+                else if (input[index] == '|')
                 {
                     if (intervalStart == -1)
-                        intervalStart = index;
+                        intervalStart = position;
                     else
                     {
-                        result.Add(new Interval<int>(intervalStart, index));
+                        result.Add(new Interval<int>(intervalStart, position));
                         if (index + 1 < input.Length && input[index + 1] == '-')
-                            intervalStart = index;
+                            intervalStart = position;
                         else
                             intervalStart = -1;
                     }
                 }
 
                 index++;
+                position++;
             }
 
             return result.ToArray();

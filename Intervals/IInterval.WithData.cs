@@ -20,7 +20,7 @@ namespace Intervals
         where T : IComparable<T>
     {
         /// <summary>
-        /// Gets or sets the associated data for the range.
+        /// Gets or sets the associated data for the interval.
         /// </summary>
         TData Data
         {
