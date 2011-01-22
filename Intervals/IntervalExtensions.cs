@@ -662,6 +662,37 @@ namespace Intervals
                 yield return new Interval<T, TOutput>(interval.Start, interval.End, converter(interval.Data));
         }
 
+        /// <summary>
+        /// Creates a range with the specified <paramref name="start"/> and <paramref name="end"/> values.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of dimension to use for the <see cref="Interval{T}.Start"/>
+        /// and <see cref="Interval{T}.End"/> properties.
+        /// </typeparam>
+        /// <param name="start">
+        /// The start of this <see cref="Interval{T}"/>.
+        /// This value is considered to be part of the interval.
+        /// </param>
+        /// <param name="end">
+        /// The end of this <see cref="Interval{T}"/>.
+        /// This value is <b>not</b> considered to be part of the interval.
+        /// </param>
+        /// <returns>
+        /// The created <see cref="Interval{T}"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <para><paramref name="end"/> is less than or equal to <paramref name="start"/>.</para>
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="start"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="end"/> is <c>null</c>.</para>
+        /// </exception>
+        public static Interval<T> To<T>(this T start, T end) where T : IComparable<T>
+        {
+            return new Interval<T>(start, end);
+        }
+
         #region Nested type: IntervalEndComparer
 
         private class IntervalEndComparer<TInterval, T> : IComparer<TInterval>
