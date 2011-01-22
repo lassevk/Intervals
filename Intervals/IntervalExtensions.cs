@@ -233,5 +233,48 @@ namespace Intervals
 
             return interval1.Start.CompareTo(interval2.End) >= 0 || interval1.End.CompareTo(interval2.Start) <= 0;
         }
+
+        /// <summary>
+        /// Gets the overlapping interval that is common between the two intervals,
+        /// or <c>null</c> if the two doesn't overlap.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of dimension for the intervals.
+        /// </typeparam>
+        /// <param name="interval1">
+        /// The first interval, to compare against <paramref name="interval2"/>.
+        /// </param>
+        /// <param name="interval2">
+        /// The second interval, to compare against <paramref name="interval1"/>.
+        /// </param>
+        /// <returns>
+        /// <c>null</c> if the two intervals doesn't overlap;
+        /// otherwise, a new <see cref="Interval{T}"/> that maps to the common region between the two.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <para><paramref name="interval1"/> is <c>null</c>.</para>
+        /// <para>- or -</para>
+        /// <para><paramref name="interval2"/> is <c>null</c>.</para>
+        /// </exception>
+        public static IInterval<T> GetOverlappingInterval<T>(this IInterval<T> interval1, IInterval<T> interval2) where T : IComparable<T>
+        {
+            if (interval1 == null)
+                throw new ArgumentNullException("interval1");
+            if (interval2 == null)
+                throw new ArgumentNullException("interval2");
+
+            T start = interval1.Start;
+            if (interval2.Start.CompareTo(start) > 0)
+                start = interval2.Start;
+
+            T end = interval1.End;
+            if (interval2.End.CompareTo(end) < 0)
+                end = interval2.End;
+
+            if (start.CompareTo(end) >= 0)
+                return null;
+
+            return new Interval<T>(start, end);
+        }
     }
 }
