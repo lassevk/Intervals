@@ -231,7 +231,7 @@ namespace Intervals
             if (interval2 == null)
                 throw new ArgumentNullException("interval2");
 
-            return interval1.Start.CompareTo(interval2.End) >= 0 || interval1.End.CompareTo(interval2.Start) <= 0;
+            return interval1.Start.CompareTo(interval2.End) < 0 && interval1.End.CompareTo(interval2.Start) > 0;
         }
 
         /// <summary>
