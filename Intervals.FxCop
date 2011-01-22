@@ -198,7 +198,7 @@
             <Messages>
              <Message Id="End" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2011-01-22 20:10:50Z">
               <Issue Name="Member">
-               <Item>'IInterval&lt;T&gt;.End'</Item>
+               <Item>'IInterval{T}.End'</Item>
                <Item>End</Item>
               </Issue>
              </Message>
@@ -210,20 +210,20 @@
           <Messages>
            <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Status="Excluded" Created="2011-01-22 20:10:50Z">
             <Issue Name="Operator">
-             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>'Interval{T}'</Item>
              <Item>!=</Item>
             </Issue>
             <Issue Name="Operator">
-             <Item>'Interval&lt;T&gt;'</Item>
-             <Item>&lt;</Item>
+             <Item>'Interval{T}'</Item>
+             <Item>{</Item>
             </Issue>
             <Issue Name="Operator">
-             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>'Interval{T}'</Item>
              <Item>==</Item>
             </Issue>
             <Issue Name="Operator">
-             <Item>'Interval&lt;T&gt;'</Item>
-             <Item>&gt;</Item>
+             <Item>'Interval{T}'</Item>
+             <Item>}</Item>
             </Issue>
             <Notes>
              <User Name="Lasse V. Karlsen">
@@ -239,8 +239,8 @@
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalComparer&lt;T&gt;.Default'</Item>
-               <Item>'IntervalComparer&lt;T&gt;'</Item>
+               <Item>'IntervalComparer{T}.Default'</Item>
+               <Item>'IntervalComparer{T}'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
@@ -250,8 +250,8 @@
              </Message>
              <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalComparer&lt;T&gt;.Default'</Item>
-               <Item>'IntervalComparer&lt;T&gt;'</Item>
+               <Item>'IntervalComparer{T}.Default'</Item>
+               <Item>'IntervalComparer{T}'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
@@ -269,8 +269,8 @@
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalEqualityComparer&lt;T&gt;.Default'</Item>
-               <Item>'IntervalEqualityComparer&lt;T&gt;'</Item>
+               <Item>'IntervalEqualityComparer{T}.Default'</Item>
+               <Item>'IntervalEqualityComparer{T}'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
@@ -280,8 +280,8 @@
              </Message>
              <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalEqualityComparer&lt;T&gt;.Default'</Item>
-               <Item>'IntervalEqualityComparer&lt;T&gt;'</Item>
+               <Item>'IntervalEqualityComparer{T}.Default'</Item>
+               <Item>'IntervalEqualityComparer{T}'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">

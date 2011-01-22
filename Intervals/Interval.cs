@@ -27,7 +27,7 @@ namespace Intervals
         private readonly T _Start;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Interval&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="Interval{T}"/> class.
         /// </summary>
         /// <param name="start">
         /// The start of this <see cref="Interval{T}"/>.

@@ -60,6 +60,7 @@
     <Compile Include="IInterval.WithData.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="Interval.NonGeneric.cs" />
+    <Compile Include="Interval.WithData.cs" />
     <Compile Include="IntervalComparer.cs" />
     <Compile Include="IntervalEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

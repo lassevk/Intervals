@@ -45,6 +45,16 @@ namespace Intervals.Tests
         }
 
         [Test]
+        public void ConstructorForDataInterval_WithoutData_StoresDefaultIntoDataProperty()
+        {
+            var interval1 = new Interval<int, string>(0, 10);
+            Assert.That(interval1.Data, Is.Null);
+
+            var interval2 = new Interval<int, int>(0, 10);
+            Assert.That(interval2.Data, Is.EqualTo(0));
+        }
+
+        [Test]
         public void Constructor_NullEnd_ThrowsArgumentNullException()
         {
             var start = new NullableComparable(10);
@@ -78,6 +88,14 @@ namespace Intervals.Tests
             var end = new NullableComparable(10);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => new Interval<NullableComparable>(start, end));
+        }
+
+        [Test]
+        public void Constructor_WithData_StoresDataIntoProperty()
+        {
+            var interval = new Interval<int, string>(0, 10, "test");
+
+            Assert.That(interval.Data, Is.EqualTo("test"));
         }
 
         [Test]
@@ -117,6 +135,14 @@ namespace Intervals.Tests
         }
 
         [Test]
+        public void Create_WithData_StoresDataIntoProperty()
+        {
+            Interval<int, string> interval = Interval.Create(0, 10, "test");
+
+            Assert.That(interval.Data, Is.EqualTo("test"));
+        }
+
+        [Test]
         public void Equals_DifferentInstanceWithSameValues_ReturnsTrue()
         {
             var a = new Interval<int>(0, 10);
@@ -127,6 +153,18 @@ namespace Intervals.Tests
 
             result = a.Equals((object)b);
             Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void Equals_IntervalWithDataAgainstSameIntervalWithoutData_ComparesEqual()
+        {
+            Interval<int, string> a = Interval.Create(0, 10, "test");
+            Interval<int> b = Interval.Create(0, 10);
+
+            Assert.That(a.Equals(b), Is.True);
+            Assert.That(a.Equals((object)b), Is.True);
+            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.True);
+            Assert.That(IntervalComparer<int>.Default.Compare(a, b), Is.EqualTo(0));
         }
 
         [Test]
