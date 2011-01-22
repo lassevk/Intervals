@@ -184,5 +184,144 @@
   <Groups />
   <Settings />
  </Rules>
- <FxCopReport Version="10.0" />
+ <FxCopReport Version="10.0">
+  <Targets>
+   <Target Name="$(ProjectDir)/Intervals/bin/Debug/Intervals.dll">
+    <Modules>
+     <Module Name="intervals.dll">
+      <Namespaces>
+       <Namespace Name="Intervals">
+        <Types>
+         <Type Name="IInterval`1">
+          <Members>
+           <Member Name="#End">
+            <Messages>
+             <Message Id="End" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2011-01-22 20:10:50Z">
+              <Issue Name="Member">
+               <Item>'IInterval&lt;T&gt;.End'</Item>
+               <Item>End</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Interval`1">
+          <Messages>
+           <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Status="Excluded" Created="2011-01-22 20:10:50Z">
+            <Issue Name="Operator">
+             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>!=</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>&lt;</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>==</Item>
+            </Issue>
+            <Issue Name="Operator">
+             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>&gt;</Item>
+            </Issue>
+            <Notes>
+             <User Name="Lasse V. Karlsen">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="IntervalComparer`1">
+          <Members>
+           <Member Name="#Default">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2011-01-22 20:10:50Z">
+              <Issue>
+               <Item>'IntervalComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalComparer&lt;T&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Status="Excluded" Created="2011-01-22 20:10:50Z">
+              <Issue>
+               <Item>'IntervalComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalComparer&lt;T&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IntervalEqualityComparer`1">
+          <Members>
+           <Member Name="#Default">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2011-01-22 20:10:50Z">
+              <Issue>
+               <Item>'IntervalEqualityComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalEqualityComparer&lt;T&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Status="Excluded" Created="2011-01-22 20:10:50Z">
+              <Issue>
+               <Item>'IntervalEqualityComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalEqualityComparer&lt;T&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="Lasse V. Karlsen">
+    <Note Id="0" Modified="2011-01-22 20:11:04Z">Won't implement operators for these types.</Note>
+    <Note Id="1" Modified="2011-01-22 20:11:41Z">Overruled, static readonly Default field is expected here.</Note>
+    <Note Id="2" Modified="2011-01-22 20:11:48Z">Overruled, static readonly Default field is expected here.</Note>
+    <Note Id="3" Modified="2011-01-22 20:11:51Z">Overruled, static readonly Default field is expected here.</Note>
+    <Note Id="4" Modified="2011-01-22 20:11:53Z">Overruled, static readonly Default field is expected here.</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104">
+    <Resolution Name="Default">Remove the read-only designation from {0} or change the field to one that is an immutable reference type. If the reference type {1} is, in fact, immutable, exclude this message.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000">
+    <Resolution Name="Default">Remove {0} from {1} or make it an instance member.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
+    <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
+   </Rule>
+   <Rule TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036">
+    <Resolution Name="Operator">{0} should define operator '{1}' since it implements IComparable.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
 </FxCopProject>

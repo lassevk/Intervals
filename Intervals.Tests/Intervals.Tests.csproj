@@ -58,6 +58,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntervalComparerTests.cs" />
+    <Compile Include="IntervalEqualityComparerTests.cs" />
+    <Compile Include="IntervalTests.cs" />
+    <Compile Include="NullableComparable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
