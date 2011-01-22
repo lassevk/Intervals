@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="IntervalComparerTests.cs" />
     <Compile Include="IntervalEqualityComparerTests.cs" />
+    <Compile Include="IntervalExtensionsTests.cs" />
     <Compile Include="IntervalTests.cs" />
     <Compile Include="NullableComparable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
