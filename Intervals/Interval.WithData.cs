@@ -75,7 +75,7 @@ namespace Intervals
         #region IInterval<T,TData> Members
 
         /// <summary>
-        /// Gets or sets the associated data for the range.
+        /// Gets or sets the associated data for the interval.
         /// </summary>
         public TData Data
         {

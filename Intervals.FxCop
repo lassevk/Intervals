@@ -196,11 +196,16 @@
           <Members>
            <Member Name="#End">
             <Messages>
-             <Message Id="End" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2011-01-22 20:10:50Z">
+             <Message Id="End" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue Name="Member">
-               <Item>'IInterval{T}.End'</Item>
+               <Item>'IInterval&lt;T&gt;.End'</Item>
                <Item>End</Item>
               </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="14" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -210,20 +215,20 @@
           <Messages>
            <Message TypeName="OverrideMethodsOnComparableTypes" Category="Microsoft.Design" CheckId="CA1036" Status="Excluded" Created="2011-01-22 20:10:50Z">
             <Issue Name="Operator">
-             <Item>'Interval{T}'</Item>
+             <Item>'Interval&lt;T&gt;'</Item>
              <Item>!=</Item>
             </Issue>
             <Issue Name="Operator">
-             <Item>'Interval{T}'</Item>
-             <Item>{</Item>
+             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>&lt;</Item>
             </Issue>
             <Issue Name="Operator">
-             <Item>'Interval{T}'</Item>
+             <Item>'Interval&lt;T&gt;'</Item>
              <Item>==</Item>
             </Issue>
             <Issue Name="Operator">
-             <Item>'Interval{T}'</Item>
-             <Item>}</Item>
+             <Item>'Interval&lt;T&gt;'</Item>
+             <Item>&gt;</Item>
             </Issue>
             <Notes>
              <User Name="Lasse V. Karlsen">
@@ -239,8 +244,8 @@
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalComparer{T}.Default'</Item>
-               <Item>'IntervalComparer{T}'</Item>
+               <Item>'IntervalComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalComparer&lt;T&gt;'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
@@ -250,8 +255,8 @@
              </Message>
              <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalComparer{T}.Default'</Item>
-               <Item>'IntervalComparer{T}'</Item>
+               <Item>'IntervalComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalComparer&lt;T&gt;'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
@@ -269,8 +274,8 @@
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalEqualityComparer{T}.Default'</Item>
-               <Item>'IntervalEqualityComparer{T}'</Item>
+               <Item>'IntervalEqualityComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalEqualityComparer&lt;T&gt;'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
@@ -280,12 +285,187 @@
              </Message>
              <Message TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000" Status="Excluded" Created="2011-01-22 20:10:50Z">
               <Issue>
-               <Item>'IntervalEqualityComparer{T}.Default'</Item>
-               <Item>'IntervalEqualityComparer{T}'</Item>
+               <Item>'IntervalEqualityComparer&lt;T&gt;.Default'</Item>
+               <Item>'IntervalEqualityComparer&lt;T&gt;'</Item>
               </Issue>
               <Notes>
                <User Name="Lasse V. Karlsen">
                 <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IntervalExtensions">
+          <Members>
+           <Member Name="#Merge`1(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`1&lt;!!0&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, IInterval&lt;T&gt;[]&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Merge`1(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`1&lt;!!0&gt;&gt;,Intervals.IntervalMergeBehavior)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;, IntervalMergeBehavior)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, IInterval&lt;T&gt;[]&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;, IntervalMergeBehavior)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="6" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Merge`2(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`2&lt;!!0,!!1&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, IInterval&lt;T, TData&gt;[]&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Merge`2(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`2&lt;!!0,!!1&gt;&gt;,Intervals.IntervalMergeBehavior)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;, IntervalMergeBehavior)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, IInterval&lt;T, TData&gt;[]&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Merge&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;, IntervalMergeBehavior)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="8" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Ordered`1(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`1&lt;!!0&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Ordered&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Ordered&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Ordered`2(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`2&lt;!!0,!!1&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Ordered&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Ordered&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Reduce`3(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`2&lt;!!0,!!1&gt;&gt;,System.Converter`2&lt;!!1,!!2&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Reduce&lt;T, TInput, TOutput&gt;(this IEnumerable&lt;IInterval&lt;T, TInput&gt;&gt;, Converter&lt;TInput, TOutput&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TInput&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Reduce&lt;T, TInput, TOutput&gt;(this IEnumerable&lt;IInterval&lt;T, TInput&gt;&gt;, Converter&lt;TInput, TOutput&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TOutput&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Slice`1(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`1&lt;!!0&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Slice&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, IInterval&lt;T&gt;[]&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Slice&lt;T&gt;(this IEnumerable&lt;IInterval&lt;T&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Slice`2(System.Collections.Generic.IEnumerable`1&lt;Intervals.IInterval`2&lt;!!0,!!1&gt;&gt;)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2011-01-22 22:40:38Z">
+              <Issue>
+               <Item>'IntervalExtensions.Slice&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, IInterval&lt;T, TData&gt;[]&gt;&gt;'</Item>
+              </Issue>
+              <Issue>
+               <Item>'IntervalExtensions.Slice&lt;T, TData&gt;(this IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;)'</Item>
+               <Item>'IEnumerable&lt;IInterval&lt;T, TData&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Lasse V. Karlsen">
+                <Note Id="12" />
                </User>
               </Notes>
              </Message>
@@ -307,6 +487,16 @@
     <Note Id="2" Modified="2011-01-22 20:11:48Z">Overruled, static readonly Default field is expected here.</Note>
     <Note Id="3" Modified="2011-01-22 20:11:51Z">Overruled, static readonly Default field is expected here.</Note>
     <Note Id="4" Modified="2011-01-22 20:11:53Z">Overruled, static readonly Default field is expected here.</Note>
+    <Note Id="5" Modified="2011-01-22 22:41:56Z">Excluded.</Note>
+    <Note Id="6" Modified="2011-01-22 22:42:00Z">Excluded.</Note>
+    <Note Id="7" Modified="2011-01-22 22:42:02Z">Excluded.</Note>
+    <Note Id="8" Modified="2011-01-22 22:42:04Z">Excluded.</Note>
+    <Note Id="9" Modified="2011-01-22 22:42:06Z">Excluded.</Note>
+    <Note Id="10" Modified="2011-01-22 22:42:08Z">Excluded.</Note>
+    <Note Id="11" Modified="2011-01-22 22:42:10Z">Excluded.</Note>
+    <Note Id="12" Modified="2011-01-22 22:42:12Z">Excluded.</Note>
+    <Note Id="13" Modified="2011-01-22 22:42:14Z">Excluded.</Note>
+    <Note Id="14" Modified="2011-01-22 22:42:16Z">Excluded.</Note>
    </User>
   </Notes>
   <Rules>
@@ -315,6 +505,9 @@
    </Rule>
    <Rule TypeName="DoNotDeclareStaticMembersOnGenericTypes" Category="Microsoft.Design" CheckId="CA1000">
     <Resolution Name="Default">Remove {0} from {1} or make it an instance member.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006">
+    <Resolution Name="Default">Consider a design where {0} doesn't nest generic type {1}.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
     <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>

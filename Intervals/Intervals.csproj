@@ -56,6 +56,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Heap.cs" />
     <Compile Include="IInterval.cs" />
     <Compile Include="IInterval.WithData.cs" />
     <Compile Include="Interval.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="IntervalEqualityComparer.cs" />
     <Compile Include="IntervalExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IntervalMergeBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Intervals.snk">
