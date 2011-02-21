@@ -61,7 +61,7 @@ namespace Intervals.Tests
             "a=01|b=1")]
         [TestCase(10,
             "|-0---------------|   ?" +
-            "|-1---------------|   ?"
+            "|-1---------------|   ?",
             "aaaaaaaaaaaaaaaaaa     ",
             "a=01")]
         [TestCase(11,
