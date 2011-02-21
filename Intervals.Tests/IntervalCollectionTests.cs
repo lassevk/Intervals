@@ -9,22 +9,65 @@ namespace Intervals.Tests
     [TestFixture]
     public class IntervalCollectionTests : TestCaseTestsBase
     {
-        [TestCase(01, "   |-0----|    |-3--|     ?" + "          |-2--|          ?" + "      |-1--------|        ?", "   aaabbbbcccccddeee      ",
+        [TestCase(01,
+            "   |-0----|    |-3--|     ?" +
+            "          |-2--|          ?" +
+            "      |-1--------|        ?",
+            "   aaabbbbcccccddeee      ",
             "a=0|b=01|c=12|d=13|e=3")]
-        [TestCase(02, "   |-0------| |-2-----|   ?" + "   |-1----------------|   ?", "   aaaaaaaaabbcccccccc    ", "a=01|b=1|c=12")]
+        [TestCase(02,
+            "   |-0------| |-2-----|   ?" +
+            "   |-1----------------|   ?",
+            "   aaaaaaaaabbcccccccc    ",
+            "a=01|b=1|c=12")]
         [TestCase(03,
-            "      |-1-------------|           ?" + "         |-2--------------|       ?" + "            |-3----|              ?" +
-            "               |-4------------|   ?" + "   |-0----------|                  ", "   aaabbbcccdddefffggghhhhiiii     ",
+            "      |-1-------------|           ?" +
+            "         |-2--------------|       ?" +
+            "            |-3----|              ?" +
+            "               |-4------------|   ?" +
+            "   |-0----------|                  ",
+            "   aaabbbcccdddefffggghhhhiiii     ",
             "a=0|b=01|c=012|d=0123|e=01234|f=1234|g=124|h=24|i=4")]
-        [TestCase(04, "|-0-------|               ?" + "          |-2---------|   ?" + "     |-1-------|           ", "aaaaabbbbbcccccddddddd     ",
+        [TestCase(04,
+            "|-0-------|               ?" +
+            "          |-2---------|   ?" +
+            "     |-1-------|           ",
+            "aaaaabbbbbcccccddddddd     ",
             "a=0|b=01|c=12|d=2")]
-        [TestCase(05, "|-0---------|            ?" + "         |-1---------|    ", "aaaaaaaaabbbccccccccc     ", "a=0|b=01|c=1")]
-        [TestCase(06, "|-0---------------|   ?" + "       |-1--------|    ", "aaaaaaabbbbbbbbbbb     ", "a=0|b=01")]
-        [TestCase(07, "       |-1--------|   ?" + "|-0---------------|   ?", "aaaaaaabbbbbbbbbbb     ", "a=0|b=01")]
-        [TestCase(08, "|-1---------------|   ?" + "|-0------|             ", "aaaaaaaaabbbbbbbbb     ", "a=01|b=1")]
-        [TestCase(09, "|-0------|            ?" + "|-1---------------|   ?", "aaaaaaaaabbbbbbbbb     ", "a=01|b=1")]
-        [TestCase(10, "|-0---------------|   ?" + "|-1---------------|   ?", "aaaaaaaaaaaaaaaaaa     ", "a=01")]
-        [TestCase(11, "|-0---------------|    ", "aaaaaaaaaaaaaaaaaa     ", "a=0")]
+        [TestCase(05,
+            "|-0---------|            ?" +
+            "         |-1---------|    ",
+            "aaaaaaaaabbbccccccccc     ",
+            "a=0|b=01|c=1")]
+        [TestCase(06,
+            "|-0---------------|   ?" +
+            "       |-1--------|    ",
+            "aaaaaaabbbbbbbbbbb     ",
+            "a=0|b=01")]
+        [TestCase(07,
+            "       |-1--------|   ?" +
+            "|-0---------------|   ?",
+            "aaaaaaabbbbbbbbbbb     ",
+            "a=0|b=01")]
+        [TestCase(08,
+            "|-1---------------|   ?" +
+            "|-0------|             ",
+            "aaaaaaaaabbbbbbbbb     ",
+            "a=01|b=1")]
+        [TestCase(09,
+            "|-0------|            ?" +
+            "|-1---------------|   ?",
+            "aaaaaaaaabbbbbbbbb     ",
+            "a=01|b=1")]
+        [TestCase(10,
+            "|-0---------------|   ?" +
+            "|-1---------------|   ?"
+            "aaaaaaaaaaaaaaaaaa     ",
+            "a=01")]
+        [TestCase(11,
+            "|-0---------------|    ",
+            "aaaaaaaaaaaaaaaaaa     ",
+            "a=0")]
         [TestCase(12, "                       ", "                       ", "")]
         public void SlicePatterns(int testIndex, string input, string output, string outputExplanation)
         {
@@ -33,13 +76,29 @@ namespace Intervals.Tests
             CompareInputAndOutput(inputIntervals, output, outputExplanation, sliced);
         }
 
-        [TestCase(01, "    |-0----|              ?" + "        |-1-----|          ", "    aaaaaaaaaaaa           ", "a=01",
+        [TestCase(01,
+            "    |-0----|              ?" +
+            "        |-1-----|          ",
+            "    aaaaaaaaaaaa           ",
+            "a=01",
             IntervalMergeBehavior.Default)]
-        [TestCase(02, "    |-0----|              ?" + "           |-1-----|       ", "    aaaaaaaaaaaaaaa        ", "a=01",
+        [TestCase(02,
+            "    |-0----|              ?" +
+            "           |-1-----|       ",
+            "    aaaaaaaaaaaaaaa        ",
+            "a=01",
             IntervalMergeBehavior.Default)]
-        [TestCase(03, "    |-0----|              ?" + "            |-1-----|      ", "    aaaaaaa bbbbbbbb       ", "a=0|b=1",
+        [TestCase(03,
+            "    |-0----|              ?" +
+            "            |-1-----|      ",
+            "    aaaaaaa bbbbbbbb       ",
+            "a=0|b=1",
             IntervalMergeBehavior.Default)]
-        [TestCase(04, "    |-0----|              ?" + "           |-1-----|       ", "    aaaaaaabbbbbbbb        ", "a=0|b=1",
+        [TestCase(04,
+            "    |-0----|              ?" +
+            "           |-1-----|       ",
+            "    aaaaaaabbbbbbbb        ",
+            "a=0|b=1",
             IntervalMergeBehavior.Overlapping)]
         public void MergePatterns(int testIndex, string input, string output, string outputExplanation, IntervalMergeBehavior behavior)
         {
@@ -48,8 +107,7 @@ namespace Intervals.Tests
             CompareInputAndOutput(inputIntervals, output, outputExplanation, merged);
         }
 
-        private static void CompareInputAndOutput(
-            List<IInterval<int>> inputRanges, string output, string outputExplanation, IInterval<int, IInterval<int>[]>[] resultsOfOperation)
+        private static void CompareInputAndOutput(List<IInterval<int>> inputRanges, string output, string outputExplanation, IInterval<int, IInterval<int>[]>[] resultsOfOperation)
         {
             int index;
 
