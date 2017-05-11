@@ -22,6 +22,7 @@
     <DocumentationFile>bin\Debug\netstandard1.0\.xml</DocumentationFile>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <TreatSpecificWarningsAsErrors />
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_0;JETBRAINS_ANNOTATIONS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,9 +30,5 @@
     <TreatSpecificWarningsAsErrors />
     <DocumentationFile>bin\Release\netstandard1.0\.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
-  </ItemGroup>
 
 </Project>
