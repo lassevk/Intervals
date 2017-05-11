@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
+
+// ReSharper disable TestFileNameWarning
+// ReSharper disable AssignNullToNotNullAttribute
 
 namespace Intervals.Tests
 {
@@ -48,24 +49,6 @@ namespace Intervals.Tests
             IInterval<int> interval2 = GetIntervals(intervals2).First();
 
             Assert.That(interval1.IsOverlapping(interval2), Is.EqualTo(expected));
-        }
-
-        [Test]
-        public void IsOverlapping_NullInterval1_ThrowsArgumentNullException()
-        {
-            IInterval<int> interval1 = null;
-            IInterval<int> interval2 = new Interval<int>(0, 10);
-
-            Assert.Throws<ArgumentNullException>(() => interval1.IsOverlapping(interval2));
-        }
-
-        [Test]
-        public void IsOverlapping_NullInterval2_ThrowsArgumentNullException()
-        {
-            IInterval<int> interval1 = new Interval<int>(0, 10);
-            IInterval<int> interval2 = null;
-
-            Assert.Throws<ArgumentNullException>(() => interval1.IsOverlapping(interval2));
         }
     }
 }

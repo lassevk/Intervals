@@ -68,19 +68,19 @@ public class F : Form
         foreach (var horizontalSlice in horizontalSlices)
         {
             var verticalRectangles =
-                from IInterval<int, Rectangle> interval in horizontalSlice.Data
-                select interval.Data;
+                from TaggedInterval<int> interval in horizontalSlice.IntervalsInSlice
+                select (Rectangle)interval.Tag;
             var verticalIntervals =
                 from rect in verticalRectangles
                 let top = Convert.ToInt32((rect.Top / (Resolution + 0.0)) * f.ClientRectangle.Height)
                 let bottom = Convert.ToInt32((rect.Bottom / (Resolution + 0.0)) * f.ClientRectangle.Height)
                 where top < bottom
                 select Interval.Create(top, bottom, rect);
-            var verticalSlices = verticalIntervals.Ordered().Slice();
+            var verticalSlices = verticalIntervals.OrderBy(i => i, IntervalComparer<int>.Default).Slice();
             
             foreach (var verticalSlice in verticalSlices)
             {
-                var grayScaleValue = Math.Min(255, Convert.ToInt32((verticalSlice.Data.Length / (RectangleCount / 5.0)) * 255));
+                var grayScaleValue = Math.Min(255, Convert.ToInt32((verticalSlice.IntervalsInSlice.Count / (RectangleCount / 5.0)) * 255));
                 using (var brush = new SolidBrush(Color.FromArgb(grayScaleValue, grayScaleValue, grayScaleValue)))
                 {
                     e.Graphics.FillRectangle(brush,

@@ -1,8 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NUnit.Framework;
+
+// ReSharper disable EqualExpressionComparison
+// ReSharper disable ExpressionIsAlwaysNull
+// ReSharper disable ObjectCreationAsStatement
+// ReSharper disable AssignNullToNotNullAttribute
+// ReSharper disable SuspiciousTypeConversion.Global
+// ReSharper disable PossibleNullReferenceException
 
 namespace Intervals.Tests
 {
@@ -45,40 +49,14 @@ namespace Intervals.Tests
         }
 
         [Test]
-        public void ConstructorForDataInterval_WithoutData_StoresDefaultIntoDataProperty()
-        {
-            var interval1 = new Interval<int, string>(0, 10);
-            Assert.That(interval1.Data, Is.Null);
-
-            var interval2 = new Interval<int, int>(0, 10);
-            Assert.That(interval2.Data, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void Constructor_NullEnd_ThrowsArgumentNullException()
-        {
-            var start = new NullableComparable(10);
-            NullableComparable end = null;
-
-            Assert.Throws<ArgumentNullException>(() => new Interval<NullableComparable>(start, end));
-        }
-
-        [Test]
-        public void Constructor_NullStart_ThrowsArgumentNullException()
-        {
-            NullableComparable start = null;
-            var end = new NullableComparable(10);
-
-            Assert.Throws<ArgumentNullException>(() => new Interval<NullableComparable>(start, end));
-        }
-
-        [Test]
-        public void Constructor_StartEqualsEnd_ThrowsArgumentOutOfRangeException()
+        public void Constructor_StartEqualsEnd_ReturnsEmptyInterval()
         {
             var start = new NullableComparable(10);
             var end = new NullableComparable(10);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new Interval<NullableComparable>(start, end));
+            var interval = new Interval<NullableComparable>(start, end);
+
+            Assert.That(interval.IsEmpty(), Is.True);
         }
 
         [Test]
@@ -91,38 +69,14 @@ namespace Intervals.Tests
         }
 
         [Test]
-        public void Constructor_WithData_StoresDataIntoProperty()
-        {
-            var interval = new Interval<int, string>(0, 10, "test");
-
-            Assert.That(interval.Data, Is.EqualTo("test"));
-        }
-
-        [Test]
-        public void Create_NullEnd_ThrowsArgumentNullException()
-        {
-            var start = new NullableComparable(10);
-            NullableComparable end = null;
-
-            Assert.Throws<ArgumentNullException>(() => Interval.Create(start, end));
-        }
-
-        [Test]
-        public void Create_NullStart_ThrowsArgumentNullException()
-        {
-            NullableComparable start = null;
-            var end = new NullableComparable(10);
-
-            Assert.Throws<ArgumentNullException>(() => Interval.Create(start, end));
-        }
-
-        [Test]
-        public void Create_StartEqualsEnd_ThrowsArgumentOutOfRangeException()
+        public void Create_StartEqualsEnd_ReturnsEmptyInterval()
         {
             var start = new NullableComparable(10);
             var end = new NullableComparable(10);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Interval.Create(start, end));
+            var interval = Interval.Create(start, end);
+
+            Assert.That(interval.IsEmpty(), Is.True);
         }
 
         [Test]
@@ -134,106 +88,131 @@ namespace Intervals.Tests
             Assert.Throws<ArgumentOutOfRangeException>(() => Interval.Create(start, end));
         }
 
-        [Test]
-        public void Create_WithData_StoresDataIntoProperty()
-        {
-            Interval<int, string> interval = Interval.Create(0, 10, "test");
-
-            Assert.That(interval.Data, Is.EqualTo("test"));
-        }
-
-        [Test]
-        public void Equals_DifferentInstanceWithSameValues_ReturnsTrue()
-        {
-            var a = new Interval<int>(0, 10);
-            var b = new Interval<int>(0, 10);
-
-            bool result = a.Equals(b);
-            Assert.That(result, Is.True);
-
-            result = a.Equals((object)b);
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        public void Equals_IntervalWithDataAgainstSameIntervalWithoutData_ComparesEqual()
-        {
-            Interval<int, string> a = Interval.Create(0, 10, "test");
-            Interval<int> b = Interval.Create(0, 10);
-
-            Assert.That(a.Equals(b), Is.True);
-            Assert.That(a.Equals((object)b), Is.True);
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.True);
-            Assert.That(IntervalComparer<int>.Default.Compare(a, b), Is.EqualTo(0));
-        }
-
-        [Test]
-        public void Equals_Itself_ReturnsTrue()
-        {
-            var interval = new Interval<int>(0, 10);
-
-            bool result = interval.Equals(interval);
-            Assert.That(result, Is.True);
-
-            result = interval.Equals((object)interval);
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        public void Equals_NotAnInterval_ReturnsFalse()
-        {
-            var interval = new Interval<int>(0, 10);
-
-            bool result = interval.Equals("test");
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        public void Equals_Null_ReturnsFalse()
-        {
-            var a = new Interval<int>(0, 10);
-            IInterval<int> b = null;
-
-            bool result = a.Equals(b);
-            Assert.That(result, Is.False);
-
-            result = a.Equals((object)b);
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        public void GetHashCode_DifferentEnd_ReturnsDifferentValues()
-        {
-            var a = new Interval<int>(0, 10);
-            var b = new Interval<int>(0, 9);
-
-            Assert.That(a.GetHashCode(), Is.Not.EqualTo(b.GetHashCode()));
-        }
-
-        [Test]
-        public void GetHashCode_DifferentInstancesWithSameValues_ReturnsSameValue()
-        {
-            var a = new Interval<int>(0, 10);
-            var b = new Interval<int>(0, 10);
-
-            Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()));
-        }
-
-        [Test]
-        public void GetHashCode_DifferentStart_ReturnsDifferentValues()
-        {
-            var a = new Interval<int>(0, 10);
-            var b = new Interval<int>(-1, 10);
-
-            Assert.That(a.GetHashCode(), Is.Not.EqualTo(b.GetHashCode()));
-        }
 
         [Test]
         public void ToString_ReturnsCorrectValue()
         {
             var interval = new Interval<int>(0, 10);
 
-            Assert.That(interval.ToString(), Is.EqualTo("0..10"));
+            Assert.That(interval.ToString(), Is.EqualTo("[0, 10)"));
         }
+
+        [Test]
+        public void TryGetOverlappingInterval_NullInterval2_ReturnsNull()
+        {
+            var interval1 = Interval.Create(0, 10);
+            Interval<int> interval2 = null;
+
+            var overlappingInterval = interval1.TryGetOverlappingInterval(interval2);
+
+            Assert.That(overlappingInterval, Is.Null);
+        }
+
+        [Test]
+        public void TryGetOverlappingInterval_NoOverlap_ReturnsNull()
+        {
+            var interval1 = Interval.Create(0, 10);
+            var interval2 = Interval.Create(15, 20);
+
+            var overlappingInterval = interval1.TryGetOverlappingInterval(interval2);
+
+            Assert.That(overlappingInterval, Is.Null);
+        }
+
+        [Test]
+        public void TryGetOverlappingInterval_TouchingIntervalsThatDoesNotOverlap_ReturnsNull()
+        {
+            var interval1 = Interval.Create(0, 10);
+            var interval2 = Interval.Create(10, 20);
+
+            var overlappingInterval = interval1.TryGetOverlappingInterval(interval2);
+
+            Assert.That(overlappingInterval, Is.Null);
+        }
+
+        [Test]
+        public void TryGetOverlappingInterval_IntervalsThatOverlapOnOneValue_ReturnsIntervalContainingThatValue()
+        {
+            var interval1 = Interval.Create(0, 10);
+            var interval2 = Interval.Create(9, 20);
+
+            var overlappingInterval = interval1.TryGetOverlappingInterval(interval2);
+            var expected = Interval.Create(9, 10);
+
+            Assert.That(overlappingInterval, Is.EqualTo(expected).Using(IntervalEqualityComparer<int>.Default));
+        }
+
+        [Test]
+        public void GetOverlappingInterval_NullInterval2_ThrowsInvalidOperationException()
+        {
+            var interval1 = Interval.Create(0, 10);
+            Interval<int> interval2 = null;
+
+            Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2));
+        }
+
+        [Test]
+        public void GetOverlappingInterval_NoOverlap_ThrowsInvalidOperationException()
+        {
+            var interval1 = Interval.Create(0, 10);
+            var interval2 = Interval.Create(15, 20);
+
+            Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2));
+        }
+
+        [Test]
+        public void GetOverlappingInterval_TouchingIntervalsThatDoesNotOverlap_ThrowsInvalidOperationException()
+        {
+            var interval1 = Interval.Create(0, 10);
+            var interval2 = Interval.Create(10, 20);
+
+            Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2));
+        }
+
+        [Test]
+        public void GetOverlappingInterval_IntervalsThatOverlapOnOneValue_ReturnsIntervalContainingThatValue()
+        {
+            var interval1 = Interval.Create(0, 10);
+            var interval2 = Interval.Create(9, 20);
+
+            var overlappingInterval = interval1.GetOverlappingInterval(interval2);
+            var expected = Interval.Create(9, 10);
+
+            Assert.That(overlappingInterval, Is.EqualTo(expected).Using(IntervalEqualityComparer<int>.Default));
+        }
+
+        [Test]
+        public void IntervalTo_SameValue_ReturnsEmptyInterval()
+        {
+            var interval = 10.IntervalTo(10);
+
+            Assert.That(interval.IsEmpty(), Is.True);
+        }
+
+        [Test]
+        public void Equals_NullOther_ReturnsFalse()
+        {
+            var interval = 10.IntervalTo(10);
+
+            var output = interval.Equals(null);
+
+            Assert.That(output, Is.False);
+        }
+
+        [TestCase(0, 10)]
+        [TestCase(0, 0)]
+        [TestCase(5, 10)]
+        [TestCase(0, 15)]
+        [TestCase(5, 15)]
+        public void GetHashCode_WithTestCases_ReturnsSameResultsAsIntervalEqualityComparerGetHashCode(int start, int end)
+        {
+            var interval = Interval.Create(start, end);
+
+            var hashCode1 = interval.GetHashCode();
+            var hashCode2 = IntervalEqualityComparer<int>.Default.GetHashCode(interval);
+
+            Assert.That(hashCode1, Is.EqualTo(hashCode2));
+        }
+
     }
 }

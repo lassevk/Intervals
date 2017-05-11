@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NUnit.Framework;
+
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace Intervals.Tests
 {
@@ -10,91 +9,56 @@ namespace Intervals.Tests
     public class IntervalComparerTests
     {
         [Test]
-        public void Compare_NullX_ReturnsNegative()
+        public void Compare_NullX_ReturnsMinusOne()
         {
-            IInterval<int> a = null;
-            IInterval<int> b = new Interval<int>(0, 10);
+            Interval<int> x = null;
+            Interval<int> y = Interval.Create(5, 15);
 
-            int result = IntervalComparer<int>.Default.Compare(a, b);
+            var output = IntervalComparer<int>.Default.Compare(x, y);
+            int expected = -1;
 
-            Assert.That(result, Is.LessThan(0));
+            Assert.That(output, Is.EqualTo(expected));
         }
 
         [Test]
-        public void Compare_NullY_ReturnsPositive()
+        public void Compare_NullY_ReturnsPlusOne()
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = null;
+            Interval<int> x = Interval.Create(5, 15); 
+            Interval<int> y = null;
 
-            int result = IntervalComparer<int>.Default.Compare(a, b);
+            var output = IntervalComparer<int>.Default.Compare(x, y);
+            int expected = +1;
 
-            Assert.That(result, Is.GreaterThan(0));
+            Assert.That(output, Is.EqualTo(expected));
         }
 
         [Test]
-        public void Compare_NullYandY_ReturnsZero()
+        public void Compare_NullXAndY_ReturnsZero()
         {
-            IInterval<int> a = null;
-            IInterval<int> b = null;
+            Interval<int> x = null;
+            Interval<int> y = null;
 
-            int result = IntervalComparer<int>.Default.Compare(a, b);
+            var output = IntervalComparer<int>.Default.Compare(x, y);
+            int expected = 0;
 
-            Assert.That(result, Is.EqualTo(0));
+            Assert.That(output, Is.EqualTo(expected));
         }
 
-        [Test]
-        public void Compare_SameInstance_ReturnsZero()
+        [TestCase(0, 10, 10, 20, -1)]
+        [TestCase(10, 20, 0, 10, +1)]
+        [TestCase(0, 10, 0, 10, 0)]
+        [TestCase(0, 10, 0, 11, -1)]
+        [TestCase(0, 10, 0, 9, +1)]
+        [TestCase(1, 10, 0, 10, +1)]
+        [TestCase(-1, 10, 0, 10, -1)]
+        public void Compare_WithTestCases_ProducesCorrectResults(int start1, int end1, int start2, int end2, int expected)
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = a;
+            Interval<int> x = Interval.Create(start1, end1);
+            Interval<int> y = Interval.Create(start2, end2);
 
-            int result = IntervalComparer<int>.Default.Compare(a, b);
+            var output = IntervalComparer<int>.Default.Compare(x, y);
 
-            Assert.That(result, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void Compare_XEndGreaterThanYEnd_ReturnsPositive()
-        {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(0, 9);
-
-            int result = IntervalComparer<int>.Default.Compare(a, b);
-
-            Assert.That(result, Is.GreaterThan(0));
-        }
-
-        [Test]
-        public void Compare_XEndLessThanYEnd_ReturnsNegative()
-        {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(0, 11);
-
-            int result = IntervalComparer<int>.Default.Compare(a, b);
-
-            Assert.That(result, Is.LessThan(0));
-        }
-
-        [Test]
-        public void Compare_XStartGreaterThanYStart_ReturnsPositive()
-        {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(-1, 10);
-
-            int result = IntervalComparer<int>.Default.Compare(a, b);
-
-            Assert.That(result, Is.GreaterThan(0));
-        }
-
-        [Test]
-        public void Compare_XStartLessThanYStart_ReturnsNegative()
-        {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(1, 10);
-
-            int result = IntervalComparer<int>.Default.Compare(a, b);
-
-            Assert.That(result, Is.LessThan(0));
+            Assert.That(output, Is.EqualTo(expected));
         }
     }
 }

@@ -1,145 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
+using JetBrains.Annotations;
 
 namespace Intervals
 {
     /// <summary>
-    /// This class is a basic implementation of <see cref="IInterval{T}"/>.
+    /// This is the concrete and most basic implementation of <see cref="IInterval{T}"/>.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of dimension to use for the <see cref="Interval{T}.Start"/>
-    /// and <see cref="Interval{T}.End"/> properties.
-    /// </typeparam>
-    public class Interval<T> : IInterval<T>
-        where T : IComparable<T>
+    /// <typeparam name="T"></typeparam>
+    public class Interval<T> : IInterval<T> 
+        where T : struct, IComparable<T>
     {
         /// <summary>
-        /// This is the backing field for the <see cref="End"/> property.
-        /// </summary>
-        private readonly T _End;
-
-        /// <summary>
-        /// This is the backing field for the <see cref="Start"/> property.
-        /// </summary>
-        private readonly T _Start;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Interval{T}"/> class.
+        /// Constructs a new instance of <see cref="IInterval{T}"/>.
         /// </summary>
         /// <param name="start">
-        /// The start of this <see cref="Interval{T}"/>.
-        /// This value is considered to be part of the interval.
+        /// The starting value for the new interval.
         /// </param>
         /// <param name="end">
-        /// The end of this <see cref="Interval{T}"/>.
-        /// This value is <b>not</b> considered to be part of the interval.
+        /// The ending value for the new interval.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="end"/> is less than or equal to <paramref name="start"/>.</para>
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="start"/> is <c>null</c>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="end"/> is <c>null</c>.</para>
+        /// <para><paramref name="start"/> has a higher value than <paramref name="end"/>.</para>
         /// </exception>
         public Interval(T start, T end)
         {
-            if (start == null)
-                throw new ArgumentNullException("start");
-            if (end == null)
-                throw new ArgumentNullException("end");
-            if (end.CompareTo(start) <= 0)
-                throw new ArgumentOutOfRangeException("end", end, "end must be greater than start");
+            if (end.CompareTo(start) < 0)
+                throw new ArgumentOutOfRangeException(nameof(end), $"end must be greater than start ({start}..{end})");
 
-            _Start = start;
-            _End = end;
+            Start = start;
+            End = end;
         }
 
-        #region IInterval<T> Members
-
         /// <summary>
-        /// Gets the start of the interval. This value is considered part of this <see cref="IInterval{T}"/>.
+        /// The starting value of the interval. This value is considered to be part of the interval.
         /// </summary>
-        public T Start
-        {
-            get
-            {
-                return _Start;
-            }
-        }
+        public T Start { get; }
 
         /// <summary>
-        /// Gets the end of the interval. This value is <b>not</b> considered part of this <see cref="IInterval{T}"/>.
+        /// The ending value of the interval. This value is not considered to be part of the interval.
         /// </summary>
-        public T End
-        {
-            get
-            {
-                return _End;
-            }
-        }
+        public T End { get; }
 
         /// <summary>
-        /// Compares the current object with another object of the same type.
+        /// Determines whether the specified <see cref="Object"/> is equal to the current <see cref="Object"/>.
         /// </summary>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the objects being compared.
+        /// <c>true</c> if the specified <see cref="Object"/> is equal to the current <see cref="Object"/>; otherwise, <c>false</c>.
         /// </returns>
-        /// <param name="other">
-        /// An object to compare with this object.
-        /// </param>
-        public int CompareTo(IInterval<T> other)
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals([CanBeNull] object obj)
         {
-            return IntervalComparer<T>.Default.Compare(this, other);
-        }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the current object is equal to the <paramref name="other"/> parameter;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="other">
-        /// An object to compare with this object.
-        /// </param>
-        public bool Equals(IInterval<T> other)
-        {
-            return IntervalEqualityComparer<T>.Default.Equals(this, other);
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Determines whether the specified <see cref="Object"/> is equal to the current <see cref="Interval{T}"/>.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="Object"/> is equal to the current <see cref="Interval{T}"/>;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        /// <param name="obj">
-        /// The <see cref="Object"/> to compare with the current <see cref="Interval{T}"/>. 
-        /// </param>
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-
-            var other = obj as IInterval<T>;
-            if (other == null)
-                return false;
-
-            return Equals(other);
+            return IntervalEqualityComparer<T>.Default.Equals(this, obj as IInterval<T>);
         }
 
         /// <summary>
         /// Serves as a hash function for a particular type. 
         /// </summary>
         /// <returns>
-        /// A hash code for the current <see cref="Interval{T}"/>.
+        /// A hash code for the current <see cref="Object"/>.
         /// </returns>
         public override int GetHashCode()
         {
@@ -147,14 +66,12 @@ namespace Intervals
         }
 
         /// <summary>
-        /// Returns a <see cref="String"/> that represents the current <see cref="Interval{T}"/>.
+        /// Returns a string that represents the current interval on the format <c>"[Start, End)"</c>.
         /// </summary>
         /// <returns>
-        /// A <see cref="String"/> that represents the current <see cref="Interval{T}"/>.
+        /// A string that represents the current interval.
         /// </returns>
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0}..{1}", Start, End);
-        }
+        [NotNull]
+        public override string ToString() => string.Format(CultureInfo.InvariantCulture, "[{0}, {1})", Start, End);
     }
 }

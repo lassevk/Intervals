@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Intervals.Tests
 {
@@ -9,6 +7,9 @@ namespace Intervals.Tests
     {
         protected IInterval<int>[] GetIntervals(string input)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input));
+
             var result = new List<IInterval<int>>();
             int index = 0;
             int intervalStart = -1;

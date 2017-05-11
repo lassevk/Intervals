@@ -11,9 +11,9 @@
 
 void Main()
 {
-	var a = 0.To(10);
-    var b = 5.To(15);
-    var c = 10.To(20);
+	var a = 0.IntervalTo(10);
+    var b = 5.IntervalTo(15);
+    var c = 10.IntervalTo(20);
     
     new[] { a, b, c }.Slice().Dump();
 }

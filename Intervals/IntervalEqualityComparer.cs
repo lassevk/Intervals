@@ -1,83 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using JetBrains.Annotations;
 
 namespace Intervals
 {
     /// <summary>
-    /// This class implements <see cref="IEqualityComparer{T}"/> for <see cref="IInterval{T}"/>.
+    /// Implements <see cref="IEqualityComparer{T}"/> for types that implement the <see cref="IInterval{T}"/> by only
+    /// considering the <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/> properties.
     /// </summary>
     /// <typeparam name="T">
-    /// The type of dimension used for the interval.
+    /// The type of boundary value the interval is based on.
     /// </typeparam>
     public sealed class IntervalEqualityComparer<T> : IEqualityComparer<IInterval<T>>
-        where T : IComparable<T>
+        where T : struct, IComparable<T>
     {
         /// <summary>
-        /// Gets the default <see cref="IEqualityComparer{T}"/> for <see cref="IInterval{T}"/>
-        /// for the specified <typeparamref name="T"/>.
+        /// Holds the default instance for <see cref="IntervalEqualityComparer{T}"/>.
         /// </summary>
+        [NotNull]
         public static readonly IntervalEqualityComparer<T> Default = new IntervalEqualityComparer<T>();
 
-        #region IEqualityComparer<IInterval<T>> Members
-
         /// <summary>
-        /// Determines whether the specified objects are equal.
+        /// Compares the two intervals and determines if they are equal when only considering the <see cref="IInterval{T}.Start"/>
+        /// and <see cref="IInterval{T}.End"/> properties.
         /// </summary>
-        /// <returns>
-        /// <c>true</c> if the specified objects are equal;
-        /// otherwise, <c>false</c>.
-        /// </returns>
         /// <param name="x">
-        /// The first object of type <typeparamref name="T"/> to compare.
+        /// The first interval to compare.
         /// </param>
         /// <param name="y">
-        /// The second object of type <typeparamref name="T"/> to compare.
+        /// The second interval to compare.
         /// </param>
-        public bool Equals(IInterval<T> x, IInterval<T> y)
+        /// <returns>
+        /// <c>true</c> if both <paramref name="x"/> and <paramref name="y"/> is <c>null</c> or if both are non-null and have the same
+        /// <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/> values; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals([CanBeNull] IInterval<T> x, [CanBeNull] IInterval<T> y)
         {
-            if (x == null && y == null)
+            if (ReferenceEquals(x, y))
                 return true;
+
             if (x == null || y == null)
                 return false;
-
-            Debug.Assert(x != null, "x should not be null here");
-            Debug.Assert(y != null, "y should not be null here");
 
             return x.Start.CompareTo(y.Start) == 0 && x.End.CompareTo(y.End) == 0;
         }
 
         /// <summary>
-        /// Returns a hash code for the specified object.
+        /// Calculates the hashcode of the interval by only considering the <see cref="IInterval{T}.Start"/>
+        /// and <see cref="IInterval{T}.End"/> properties.
         /// </summary>
-        /// <returns>
-        /// A hash code for the specified object.
-        /// </returns>
         /// <param name="obj">
-        /// The <see cref="Object"/> for which a hash code is to be returned.
+        /// The interval to calculate the hashcode for.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.
-        /// </exception>
-        public int GetHashCode(IInterval<T> obj)
+        /// <returns>
+        /// 0 if <paramref name="obj"/> is <c>null</c>; otherwise the hashcode of <see cref="IInterval{T}.Start"/>
+        /// and <see cref="IInterval{T}.End"/> combined.
+        /// </returns>
+        public int GetHashCode([CanBeNull] IInterval<T> obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                return 0;
 
-            int result = 37;
-
-            result *= 23;
-            if (obj.Start != null)
-                result += obj.Start.GetHashCode();
-
-            result *= 23;
-            if (obj.End != null)
-                result += obj.End.GetHashCode();
-
-            return result;
+            return (23 + obj.Start.GetHashCode()) * 37 + obj.End.GetHashCode();
         }
-
-        #endregion
     }
 }

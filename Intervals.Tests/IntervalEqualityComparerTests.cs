@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NUnit.Framework;
+
+// ReSharper disable PossibleNullReferenceException
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Intervals.Tests
 {
@@ -10,74 +10,90 @@ namespace Intervals.Tests
     public class IntervalEqualityComparerTests
     {
         [Test]
-        public void Equals_DifferentEnd_ReturnsFalse()
+        public void Equals_DifferentInstanceWithSameValues_ReturnsTrue()
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(0, 11);
+            var a = new Interval<int>(0, 10);
+            var b = new Interval<int>(0, 10);
 
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.False);
+            bool result = IntervalEqualityComparer<int>.Default.Equals(a, b);
+            Assert.That(result, Is.True);
         }
 
         [Test]
-        public void Equals_DifferentInstancesSameValues_ReturnsTrue()
+        public void Equals_IntervalWithDataAgainstSameIntervalWithoutData_ComparesEqual()
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(0, 10);
+            TaggedInterval<int> a = TaggedInterval.Create(0, 10, "test");
+            Interval<int> b = Interval.Create(0, 10);
 
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.True);
+            var result = IntervalEqualityComparer<int>.Default.Equals(a, b);
+            Assert.That(result, Is.True);
         }
 
         [Test]
-        public void Equals_DifferentStart_ReturnsFalse()
+        public void Equals_Itself_ReturnsTrue()
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = new Interval<int>(1, 10);
+            var interval = new Interval<int>(0, 10);
 
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.False);
+            bool result = IntervalEqualityComparer<int>.Default.Equals(interval, interval);
+            Assert.That(result, Is.True);
         }
 
         [Test]
-        public void Equals_NullX_ReturnsFalse()
+        public void Equals_NotAnInterval_ReturnsFalse()
         {
-            IInterval<int> a = null;
-            IInterval<int> b = new Interval<int>(0, 10);
+            var interval = new Interval<int>(0, 10);
 
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.False);
+            bool result = interval.Equals("test");
+            Assert.That(result, Is.False);
         }
 
         [Test]
-        public void Equals_NullXandY_ReturnsTrue()
+        public void Equals_Null_ReturnsFalse()
         {
-            IInterval<int> a = null;
-            IInterval<int> b = null;
+            var a = new Interval<int>(0, 10);
 
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.True);
+            bool result = IntervalEqualityComparer<int>.Default.Equals(a, null);
+            Assert.That(result, Is.False);
         }
 
         [Test]
-        public void Equals_NullY_ReturnsFalse()
+        public void GetHashCode_NullInterval_ReturnsZero()
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = null;
-
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.False);
+            var hashCode = IntervalEqualityComparer<int>.Default.GetHashCode(null);
+            Assert.That(hashCode, Is.EqualTo(0));
         }
 
         [Test]
-        public void Equals_SameInstance_ReturnsTrue()
+        public void GetHashCode_DifferentEnd_ReturnsDifferentValues()
         {
-            IInterval<int> a = new Interval<int>(0, 10);
-            IInterval<int> b = a;
+            var a = new Interval<int>(0, 10);
+            var b = new Interval<int>(0, 9);
 
-            Assert.That(IntervalEqualityComparer<int>.Default.Equals(a, b), Is.True);
+            var hashCodeA = IntervalEqualityComparer<int>.Default.GetHashCode(a);
+            var hashCodeB = IntervalEqualityComparer<int>.Default.GetHashCode(b);
+            Assert.That(hashCodeA, Is.Not.EqualTo(hashCodeB));
         }
 
         [Test]
-        public void GetHashCode_NullArgument_ThrowsArgumentNullException()
+        public void GetHashCode_DifferentInstancesWithSameValues_ReturnsSameValue()
         {
-            IInterval<int> a = null;
+            var a = new Interval<int>(0, 10);
+            var b = new Interval<int>(0, 10);
 
-            Assert.Throws<ArgumentNullException>((() => IntervalEqualityComparer<int>.Default.GetHashCode(a)));
+            var hashCodeA = IntervalEqualityComparer<int>.Default.GetHashCode(a);
+            var hashCodeB = IntervalEqualityComparer<int>.Default.GetHashCode(b);
+            Assert.That(hashCodeA, Is.EqualTo(hashCodeB));
+        }
+
+        [Test]
+        public void GetHashCode_DifferentStart_ReturnsDifferentValues()
+        {
+            var a = new Interval<int>(0, 10);
+            var b = new Interval<int>(-1, 10);
+
+            var hashCodeA = IntervalEqualityComparer<int>.Default.GetHashCode(a);
+            var hashCodeB = IntervalEqualityComparer<int>.Default.GetHashCode(b);
+            Assert.That(hashCodeA, Is.Not.EqualTo(hashCodeB));
         }
     }
 }

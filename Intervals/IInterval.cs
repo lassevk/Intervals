@@ -1,39 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Intervals
 {
     /// <summary>
-    /// This interface must be implemented by classes that will represent a simple
-    /// interval of values between two end-points.
+    /// This interface can be implemented by types that should function as intervals in the context of using
+    /// them with this class library.
     /// </summary>
     /// <typeparam name="T">
-    /// The type of dimension to use for the <see cref="Start"/>
-    /// and <see cref="End"/> properties.
+    /// The type of boundary value the interval will be based on.
     /// </typeparam>
-    /// <remarks>
-    /// Note that <see cref="Start"/> is considered to be part of the interval, whereas
-    /// <see cref="End"/> is not.
-    /// </remarks>
-    public interface IInterval<T> : IComparable<IInterval<T>>, IEquatable<IInterval<T>>
-        where T : IComparable<T>
+    public interface IInterval<out T>
+        where T : struct, IComparable<T>
     {
         /// <summary>
-        /// Gets the start of the interval. This value is considered part of this <see cref="IInterval{T}"/>.
+        /// The starting value of the interval. This value is considered to be part of the interval.
         /// </summary>
-        T Start
-        {
-            get;
-        }
+        T Start { get; }
 
         /// <summary>
-        /// Gets the end of the interval. This value is <b>not</b> considered part of this <see cref="IInterval{T}"/>.
+        /// The ending value of the interval. This value is not considered to be part of the interval.
         /// </summary>
-        T End
-        {
-            get;
-        }
+        T End { get; }
     }
 }

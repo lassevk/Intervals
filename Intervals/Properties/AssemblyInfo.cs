@@ -1,26 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Intervals")]
-[assembly: AssemblyDescription("Interval Calculation Class Library")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Intervals")]
-[assembly: AssemblyCopyright("Copyright (C) Lasse V. Karlsen 2010-2011, All rights reserved.")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-[assembly: ComVisible(false)]
-[assembly: CLSCompliant(true)]
-[assembly: Guid("7ebb24bb-6be1-4eb2-87a1-cb34063710f6")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: NeutralResourcesLanguage("en")]
 #if USE_RELEASE_KEY
 [assembly: InternalsVisibleTo("Intervals.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001006518e40197a668d30af8fa42f0227fc6d214b45eadfb8b890b39ee370394c25b80cbe2fe19a5415d33dfec6b84909df1c8685966461db6c644aa5da5f2b3c65cd837aed1513bc7ce8a9c9d7d4914ac7dd98b4318c1c112a7a2b9e8cef4540ada875b96a5a406f51175473200ba6d77435053a055c40f8301857d748910cfc2ad")]
 #else

@@ -1,275 +1,393 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Intervals
 {
     /// <summary>
-    /// This class holds extension methods for <see cref="IInterval{T}"/> and
-    /// <see cref="IInterval{T,TData}"/>.
+    /// Extension methods for <see cref="IInterval{T}"/> and <see cref="IEnumerable{T}"/> when T is <see cref="IInterval{T}"/>.
     /// </summary>
     public static class IntervalExtensions
     {
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Int32"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static long GetSpan(this IInterval<int> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - (long)interval.Start;
-        }
+        public static long GetSpan([CanBeNull] this IInterval<int> interval) => interval?.End - (long)(interval?.Start ?? 0) ?? 0L;
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Byte"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static byte GetSpan(this IInterval<byte> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return (byte)(interval.End - interval.Start);
-        }
+        public static byte GetSpan([CanBeNull] this IInterval<byte> interval) => (byte)(interval?.End - interval?.Start ?? 0);
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Int64"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static long GetSpan(this IInterval<long> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - interval.Start;
-        }
+        public static long GetSpan([CanBeNull] this IInterval<long> interval) => interval?.End - interval?.Start ?? 0L;
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Int16"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static int GetSpan(this IInterval<short> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - interval.Start;
-        }
+        public static int GetSpan([CanBeNull] this IInterval<short> interval) => interval?.End - interval?.Start ?? 0;
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Double"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static double GetSpan(this IInterval<double> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - interval.Start;
-        }
+        public static double GetSpan([CanBeNull] this IInterval<double> interval) => interval?.End - interval?.Start ?? 0.0;
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Single"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static float GetSpan(this IInterval<float> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - interval.Start;
-        }
+        public static float GetSpan([CanBeNull] this IInterval<float> interval) => interval?.End - interval?.Start ?? 0F;
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="Decimal"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static decimal GetSpan(this IInterval<decimal> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - interval.Start;
-        }
+        public static decimal GetSpan([CanBeNull] this IInterval<decimal> interval) => interval?.End - interval?.Start ?? 0M;
 
         /// <summary>
-        /// Calculates the span of values the interval covers.
+        /// Gets the span, the difference between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>
+        /// for an interval of type <see cref="DateTime"/>.
         /// </summary>
         /// <param name="interval">
-        /// The interval to calculate the span for.
+        /// The interval to get the span of.
         /// </param>
         /// <returns>
-        /// The span of the interval.
+        /// The difference between between <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/>;
+        /// or 0 if <paramref name="interval"/> is <c>null</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static TimeSpan GetSpan(this IInterval<DateTime> interval)
-        {
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            return interval.End - interval.Start;
-        }
+        public static TimeSpan GetSpan([CanBeNull] this IInterval<DateTime> interval) => interval?.End - interval?.Start ?? TimeSpan.Zero;
 
         /// <summary>
-        /// Returns <c>true</c> if the specified <paramref name="value"/>
-        /// is considered to be a part of the specified <paramref name="interval"/>.
+        /// Calculates all the slices of the intervals in the collection. Please see the wiki for a more complete explanation of
+        /// the slice operation.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension for the interval.
+        /// The type of boundary value the intervals are based on.
         /// </typeparam>
-        /// <param name="interval">
-        /// The interval to check the <paramref name="value"/> against.
+        /// <param name="intervals">
+        /// The intervals to slice.
         /// </param>
-        /// <param name="value">
-        /// The value to check against the <paramref name="interval"/>.
+        /// <param name="isAlreadyOrdered">
+        /// If it is known that all the intervals are already ordered according to the <see cref="IntervalComparer{T}"/>
+        /// specification, then this parameter can be set to <c>true</c> to avoid an extra sorting step. The default
+        /// value is <c>false</c> and should be left as-is if this cannot be guaranteed. It is undocumented and unsupported
+        /// to call this method with this parameter as <c>true</c> if the intervals aren't correctly ordered.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the <paramref name="value"/> is considered to be a part of the <paramref name="interval"/>;
+        /// A collection of slices for the intervals.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="intervals"/> is <c>null</c>.
+        /// </exception>
+        [NotNull, ItemNotNull]
+        public static IEnumerable<Slice<T>> Slice<T>([NotNull, ItemNotNull] this IEnumerable<IInterval<T>> intervals, bool isAlreadyOrdered = false)
+            where T : struct, IComparable<T>
+        {
+            if (intervals == null)
+                throw new ArgumentNullException(nameof(intervals));
+
+            if (!isAlreadyOrdered)
+                intervals = intervals.OrderBy(interval => interval, IntervalComparer<T>.Default);
+
+            return new SliceEnumerator<T>(intervals);
+        }
+
+        /// <summary>
+        /// Merges overlapping and possibly adjacent intervals into slices.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of boundary value the intervals are based on.
+        /// </typeparam>
+        /// <param name="intervals">
+        /// The intervals to merge.
+        /// </param>
+        /// <param name="behavior">
+        /// The merge behavior, specifies whether only overlapping intervals should be merged or if also adjacent intervals should be merged.
+        /// See the <see cref="IntervalMergeBehavior"/> enum for more information.
+        /// </param>
+        /// <returns>
+        /// A collection of slices containing the merged intervals.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="intervals"/> is <c>null</c>.
+        /// </exception>
+        [NotNull, ItemNotNull]
+        public static IEnumerable<Slice<T>> Merge<T>([NotNull, ItemNotNull] this IEnumerable<IInterval<T>> intervals, IntervalMergeBehavior behavior = IntervalMergeBehavior.Default)
+            where T : struct, IComparable<T>
+        {
+            if (intervals == null)
+                throw new ArgumentNullException(nameof(intervals));
+
+            return new MergeEnumerator<T>(intervals, behavior);
+        }
+
+        /// <summary>
+        /// Factory extension method on T to create an interval between two boundary values.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of boundary value the interval will be based on.
+        /// </typeparam>
+        /// <param name="start">
+        /// The starting value for the new interval.
+        /// </param>
+        /// <param name="end">
+        /// The ending value for the new interval.
+        /// </param>
+        /// <returns>
+        /// The newly created interval.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <para><paramref name="start"/> has a higher value than <paramref name="end"/>.</para>
+        /// </exception>
+        [NotNull]
+        public static Interval<T> IntervalTo<T>(this T start, T end)
+            where T : struct, IComparable<T>
+        {
+            return new Interval<T>(start, end);
+        }
+
+        /// <summary>
+        /// Factory extension method on T to create an interval between two boundary values with a tag.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of boundary value the interval will be based on.
+        /// </typeparam>
+        /// <param name="start">
+        /// The starting value for the new interval.
+        /// </param>
+        /// <param name="end">
+        /// The ending value for the new interval.
+        /// </param>
+        /// <param name="tag">
+        /// The tag for the interval.
+        /// </param>
+        /// <returns>
+        /// The newly created interval.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <para><paramref name="start"/> has a higher value than <paramref name="end"/>.</para>
+        /// </exception>
+        [NotNull]
+        public static TaggedInterval<T> IntervalTo<T>(this T start, T end, [CanBeNull] object tag)
+            where T : struct, IComparable<T>
+        {
+            return new TaggedInterval<T>(start, end, tag);
+        }
+
+        /// <summary>
+        /// Compares two intervals and returns a value indicating whether one is less than, equal to, or greater than the other.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of boundary value the interval is based on.
+        /// </typeparam>
+        /// <returns>
+        /// <para>A signed integer that indicates the relative values of <paramref name="interval"/> and <paramref name="other"/>, as shown in the following table.</para>
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term>Less than zero</term>
+        ///         <description><paramref name="interval"/> comes before <paramref name="other"/>.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>Zero</term>
+        ///         <description><paramref name="interval"/> is equal to <paramref name="other"/>.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>Greater than zero</term>
+        ///         <description><paramref name="interval"/> comes after <paramref name="other"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </returns>
+        /// <param name="interval">
+        /// The first interval to compare.
+        /// </param>
+        /// <param name="other">
+        /// The second interval to compare.
+        /// </param>
+        /// <remarks>
+        /// Note that if both <paramref name="interval"/> and <paramref name="other"/> is <c>null</c>, the return value will be zero, whereas
+        /// if only one of them is <c>null</c> then that interval comes first.
+        /// </remarks>
+        public static int CompareTo<T>([CanBeNull] this IInterval<T> interval, [CanBeNull] IInterval<T> other)
+            where T : struct, IComparable<T>
+        {
+            return IntervalComparer<T>.Default.Compare(interval, other);
+        }
+
+        /// <summary>
+        /// Compares the two intervals and determines if they are equal when only considering the <see cref="IInterval{T}.Start"/>
+        /// and <see cref="IInterval{T}.End"/> properties.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of boundary value the interval is based on.
+        /// </typeparam>
+        /// <param name="interval">
+        /// The first interval to compare.
+        /// </param>
+        /// <param name="other">
+        /// The second interval to compare.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if both <paramref name="interval"/> and <paramref name="other"/> is <c>null</c> or if both are non-null and have the same
+        /// <see cref="IInterval{T}.Start"/> and <see cref="IInterval{T}.End"/> values; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool Equals<T>([CanBeNull] this IInterval<T> interval, [CanBeNull] IInterval<T> other)
+            where T : struct, IComparable<T>
+        {
+            return IntervalEqualityComparer<T>.Default.Equals(interval, other);
+        }
+
+        /// <summary>
+        /// Determines if the specified value is considered to be part of the specified interval.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of boundary value the interval is based on.
+        /// </typeparam>
+        /// <param name="interval">
+        /// The interval to examine.
+        /// </param>
+        /// <param name="value">
+        /// The value to determine whether it is inside <paramref name="interval"/> or not.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="value"/> is considered to be part of <paramref name="interval"/>;
         /// otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
-        /// Note that the <see cref="IInterval{T}.End"/> value is not considered to be a part of the interval.
+        /// If <paramref name="interval"/> is <c>null</c> the return value will be <c>false</c>.
         /// </remarks>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval"/> is <c>null</c>.</para>
-        /// </exception>
-        public static bool Contains<T>(this IInterval<T> interval, T value) where T : IComparable<T>
+        public static bool Contains<T>([CanBeNull] this IInterval<T> interval, T value)
+            where T : struct, IComparable<T>
         {
             if (interval == null)
-                throw new ArgumentNullException("interval");
+                return false;
 
             return interval.Start.CompareTo(value) <= 0 && interval.End.CompareTo(value) > 0;
         }
 
         /// <summary>
-        /// Returns <c>true</c> if the two intervals overlap, meaning that at least one value exists
-        /// that is considered to be part of both intervals.
+        /// Determines if the two intervals overlap. Overlap means that there must exist at least one value that
+        /// is considered to be part of both intervals.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension for the intervals.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <param name="interval1">
-        /// The first interval, to compare against <paramref name="interval2"/>.
+        /// <param name="interval">
+        /// The first interval to compare.
         /// </param>
-        /// <param name="interval2">
-        /// The second interval, to compare against <paramref name="interval1"/>.
+        /// <param name="other">
+        /// The second interval to compare.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the two intervals overlaps;
-        /// otherwise, <c>false</c>.
+        /// <c>true</c> if the two intervals overlap; otherwise <c>false</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval1"/> is <c>null</c>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="interval2"/> is <c>null</c>.</para>
-        /// </exception>
-        public static bool IsOverlapping<T>(this IInterval<T> interval1, IInterval<T> interval2) where T : IComparable<T>
+        public static bool IsOverlapping<T>([CanBeNull] this IInterval<T> interval, [CanBeNull] IInterval<T> other)
+            where T : struct, IComparable<T>
         {
-            if (interval1 == null)
-                throw new ArgumentNullException("interval1");
-            if (interval2 == null)
-                throw new ArgumentNullException("interval2");
-
-            return interval1.Start.CompareTo(interval2.End) < 0 && interval1.End.CompareTo(interval2.Start) > 0;
+            if (interval == null || other == null)
+                return false;
+            if (ReferenceEquals(interval, other))
+                return true;
+            return interval.Start.CompareTo(other.End) < 0 && interval.End.CompareTo(other.Start) > 0;
         }
 
         /// <summary>
-        /// Gets the overlapping interval that is common between the two intervals,
-        /// or <c>null</c> if the two doesn't overlap.
+        /// Attempts to get the overlapping part between two intervals, meaning it will return a new interval that contains the portion
+        /// of the two intervals that are in common / overlap. If the two intervals does not overlap this method will return <c>null</c>
+        /// instead.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension for the intervals.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <param name="interval1">
-        /// The first interval, to compare against <paramref name="interval2"/>.
+        /// <param name="interval">
+        /// The first interval to compare.
         /// </param>
-        /// <param name="interval2">
-        /// The second interval, to compare against <paramref name="interval1"/>.
+        /// <param name="other">
+        /// The second interval to compare.
         /// </param>
         /// <returns>
-        /// <c>null</c> if the two intervals doesn't overlap;
-        /// otherwise, a new <see cref="Interval{T}"/> that maps to the common region between the two.
+        /// A new <see cref="Interval{T}"/> containing the overlapping part between the two intervals or
+        /// <c>null</c> if the two intervals does not overlap.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="interval1"/> is <c>null</c>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="interval2"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IInterval<T> GetOverlappingInterval<T>(this IInterval<T> interval1, IInterval<T> interval2) where T : IComparable<T>
+        /// <remarks>
+        /// Note that if either or both interval is <c>null</c> this method will also return <c>null</c>.
+        /// </remarks>
+        [CanBeNull]
+        public static IInterval<T> TryGetOverlappingInterval<T>([CanBeNull] this IInterval<T> interval, [CanBeNull] IInterval<T> other)
+            where T : struct, IComparable<T>
         {
-            if (interval1 == null)
-                throw new ArgumentNullException("interval1");
-            if (interval2 == null)
-                throw new ArgumentNullException("interval2");
+            if (ReferenceEquals(interval, other))
+                return interval;
+            if (interval == null || other == null)
+                return null;
 
-            T start = interval1.Start;
-            if (interval2.Start.CompareTo(start) > 0)
-                start = interval2.Start;
+            T start = interval.Start;
+            if (other.Start.CompareTo(start) > 0)
+                start = other.Start;
 
-            T end = interval1.End;
-            if (interval2.End.CompareTo(end) < 0)
-                end = interval2.End;
+            T end = interval.End;
+            if (other.End.CompareTo(end) < 0)
+                end = other.End;
 
             if (start.CompareTo(end) >= 0)
                 return null;
@@ -278,436 +396,181 @@ namespace Intervals
         }
 
         /// <summary>
-        /// Produces an ordered collection of the intervals, by sorting them according to the normal
-        /// interval sorting order. See <see cref="IntervalComparer{T}.Default"/> for a definition of what that
-        /// sort order is.
+        /// Gets the overlapping part between two intervals, meaning it will return a new interval that contains the portion
+        /// of the two intervals that are in common / overlap. If the two intervals does not overlap this method will throw
+        /// <see cref="InvalidOperationException"/>.
+        /// instead.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <param name="collection">
-        /// The collection of intervals to sort.
+        /// <param name="interval">
+        /// The first interval to compare.
+        /// </param>
+        /// <param name="other">
+        /// The second interval to compare.
         /// </param>
         /// <returns>
-        /// A sorted collection of intervals.
+        /// A new <see cref="Interval{T}"/> containing the overlapping part between the two intervals.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="collection"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T>> Ordered<T>(this IEnumerable<IInterval<T>> collection) where T : IComparable<T>
-        {
-            return collection.OrderBy(r => r, IntervalComparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Produces an ordered collection of the intervals, by sorting them according to the normal
-        /// interval sorting order. See <see cref="IntervalComparer{T}.Default"/> for a definition of what that
-        /// sort order is.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
-        /// </typeparam>
-        /// <typeparam name="TData">
-        /// The type of data to associate with the interval.
-        /// </typeparam>
-        /// <param name="collection">
-        /// The collection of intervals to sort.
-        /// </param>
-        /// <returns>
-        /// A sorted collection of intervals.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="collection"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T, TData>> Ordered<T, TData>(this IEnumerable<IInterval<T, TData>> collection) where T : IComparable<T>
-        {
-            return collection.OrderBy(r => r, IntervalComparer<T>.Default);
-        }
-
-        /// <summary>
-        /// Slices up the intervals, which has to be sorted. See remarks for what the "Slice" operation really does.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
-        /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to slice.
-        /// </param>
-        /// <returns>
-        /// A collection of slices.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
+        /// <exception cref="InvalidOperationException">
+        /// The two intervals does not overlap.
         /// </exception>
         /// <remarks>
-        /// <para>Note that the intervalss must be sorted according to normal interval sort order.</para>
-        /// <para>Slicing means to look at all the intervals as though they had been drawn on a timeline, find all
-        /// overlapping intervals, and produce slices, where each slice contains one or more source intervals, and all the source
-        /// intervals cover that slice totally.</para>
-        /// <para>As an example, consider the two intervals A=0..10 and B=5..15. These would produce 3 slices. The first slice
-        /// would be 0..5, and be associated with only the A slice. The second slice would be 5..10, and be
-        /// associated with both A and B (since they both totally cover that area). The third and final slice would be
-        /// 10..15 and only be associated with B.</para>
+        /// Note that if either or both interval is <c>null</c> this method will also throw <see cref="InvalidOperationException"/>.
         /// </remarks>
-        public static IEnumerable<IInterval<T, IInterval<T>[]>> Slice<T>(this IEnumerable<IInterval<T>> intervals) where T : IComparable<T>
+        [NotNull]
+        public static IInterval<T> GetOverlappingInterval<T>([NotNull] this IInterval<T> interval, [NotNull] IInterval<T> other)
+            where T : struct, IComparable<T>
         {
-            if (intervals == null)
-                throw new ArgumentNullException("intervals");
-
-            return InternalSlice<T, IInterval<T>>(intervals);
+            var result = TryGetOverlappingInterval(interval, other);
+            if (result == null)
+                throw new InvalidOperationException($"Unable to get overlapping interval between {interval} and {other}");
+            return result;
         }
 
         /// <summary>
-        /// Slices up the intervals, which has to be sorted. See remarks for what the "Slice" operation really does.
+        /// Validates that the specified interval is considered "valid" which means that <see cref="IInterval{T}.Start"/>
+        /// is either equal to or less than <see cref="IInterval{T}.End"/>.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <typeparam name="TData">
-        /// The type of data to associate with the interval.
-        /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to slice.
+        /// <param name="interval">
+        /// The interval to validate.
         /// </param>
         /// <returns>
-        /// A collection of slices.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
-        /// </exception>
-        /// <remarks>
-        /// <para>Note that the intervals must be sorted according to normal interval sort order.</para>
-        /// <para>Slicing means to look at all the intervals as though they had been drawn on a timeline, find all
-        /// overlapping intervals, and produce slices, where each slice contains one or more source intervals, and all the source
-        /// intervals cover that slice totally.</para>
-        /// <para>As an example, consider the two intervals A=0..10 and B=5..15. These would produce 3 slices. The first slice
-        /// would be 0..5, and be associated with only the A slice. The second slice would be 5..10, and be
-        /// associated with both A and B (since they both totally cover that area). The third and final slice would be
-        /// 10..15 and only be associated with B.</para>
-        /// </remarks>
-        public static IEnumerable<IInterval<T, IInterval<T, TData>[]>> Slice<T, TData>(this IEnumerable<IInterval<T, TData>> intervals)
-            where T : IComparable<T>
+        [ContractAnnotation("null => false")]
+        public static bool IsValid<T>([CanBeNull] this IInterval<T> interval)
+            where T : struct, IComparable<T>
         {
-            if (intervals == null)
-                throw new ArgumentNullException("intervals");
-
-            return InternalSlice<T, IInterval<T, TData>>(intervals);
+            return interval != null && interval.Start.CompareTo(interval.End) <= 0;
         }
 
         /// <summary>
-        /// Merge overlapping, and optionally adjacent, intervals into one interval, with associations back to the
-        /// original intervals, using the default merge behavior.
+        /// Determines if the specified interval is empty or not. An empty interval is an interval where there exists no
+        /// value at all that is considered part of the interval. Technically this means that <see cref="IInterval{T}.Start"/>
+        /// equals <see cref="IInterval{T}.End"/>.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to merge.
+        /// <param name="interval">
+        /// The interval to validate.
         /// </param>
         /// <returns>
-        /// A collection of merged intervals.
+        /// <c>true</c> if <paramref name="interval"/> is <c>null</c> or if the <see cref="IInterval{T}.Start"/> property equals
+        /// the <see cref="IInterval{T}.End"/> property.
         /// </returns>
-        /// <remarks>
-        /// <para>Note that the intervals must be sorted according to normal interval sort order.</para>
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T, IInterval<T>[]>> Merge<T>(this IEnumerable<IInterval<T>> intervals) where T : IComparable<T>
+        [ContractAnnotation("null => true")]
+        public static bool IsEmpty<T>([CanBeNull] this IInterval<T> interval)
+            where T : struct, IComparable<T>
         {
-            return Merge(intervals, IntervalMergeBehavior.Default);
+            return interval == null || interval.Start.CompareTo(interval.End) == 0;
         }
 
         /// <summary>
-        /// Merge overlapping, and optionally adjacent, intervals into one interval, with associations back to the
-        /// original intervals.
+        /// Determines if the two intervals are adjacent, meaning that where one interval starts the other ends, or vice versa.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to merge.
+        /// <param name="interval">
+        /// The first interval to compare.
         /// </param>
-        /// <param name="behavior">
-        /// The merge behavior, see <see cref="IntervalMergeBehavior"/> for more information.
+        /// <param name="other">
+        /// The second interval to compare.
         /// </param>
         /// <returns>
-        /// A collection of merged intervals.
+        /// <c>true</c> if the two intervals are ajdacent; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
-        /// <para>Note that the intervals must be sorted according to normal interval sort order.</para>
+        /// Note that if either or both <paramref name="interval"/> and <paramref name="other"/> is <c>null</c> this method
+        /// will return <c>false</c>.
         /// </remarks>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T, IInterval<T>[]>> Merge<T>(this IEnumerable<IInterval<T>> intervals, IntervalMergeBehavior behavior)
-            where T : IComparable<T>
+        [ContractAnnotation("interval:null => false")]
+        [ContractAnnotation("other:null => false")]
+        public static bool IsAdjacentTo<T>([CanBeNull] this IInterval<T> interval, [CanBeNull] IInterval<T> other)
+            where T : struct, IComparable<T>
         {
-            if (intervals == null)
-                throw new ArgumentNullException("intervals");
+            if (interval == null || other == null)
+                return false;
 
-            return InternalMerge<T, IInterval<T>>(intervals, behavior);
+            return interval.Start.CompareTo(other.End) == 0 || interval.End.CompareTo(other.Start) == 0;
         }
 
         /// <summary>
-        /// Merge overlapping, and optionally adjacent, intervals into one interval, with associations back to the
-        /// original intervals, using the default merge behavior.
+        /// Attempts to calculate the union of the overlapping or adjacent intervals, meaning it will return a new interval that
+        /// contains the outer boundaries of the two intervals combined. If the two intervals does not overlap
+        /// and aren't adjacent this method will return <c>null</c>.
+        /// instead.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <typeparam name="TData">
-        /// The type of data to associate with the interval.
-        /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to merge.
+        /// <param name="interval">
+        /// The first interval to compare.
+        /// </param>
+        /// <param name="other">
+        /// The second interval to compare.
         /// </param>
         /// <returns>
-        /// A collection of merged intervals.
+        /// A new <see cref="Interval{T}"/> containing the outermost boundaries of the two overlapping or adjacent
+        /// intervals; or <c>null</c> if the two intervals does not overlap and aren't adjacent.
         /// </returns>
         /// <remarks>
-        /// <para>Note that the intervals must be sorted according to normal interval sort order.</para>
+        /// Note that if either or both interval is <c>null</c> this method will also return <c>null</c>.
         /// </remarks>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T, IInterval<T, TData>[]>> Merge<T, TData>(this IEnumerable<IInterval<T, TData>> intervals)
-            where T : IComparable<T>
+        [ContractAnnotation("interval:null => null")]
+        [ContractAnnotation("other:null => null")]
+        public static Interval<T> TryGetUnion<T>([CanBeNull] this IInterval<T> interval, [CanBeNull] IInterval<T> other)
+            where T : struct, IComparable<T>
         {
-            return Merge(intervals, IntervalMergeBehavior.Default);
+            if (interval == null || other == null)
+                return null;
+
+            if (!interval.IsOverlapping(other) && !interval.IsAdjacentTo(other))
+                return null;
+
+            return Interval.Create(Min(interval.Start, other.Start), Max(interval.End, other.End));
         }
 
         /// <summary>
-        /// Merge overlapping, and optionally adjacent, intervals into one interval, with associations back to the
-        /// original intervals.
+        /// Calculates the union of the overlapping or adjacent intervals, meaning it will return a new interval that
+        /// contains the outer boundaries of the two intervals combined. If the two intervals does not overlap
+        /// and aren't adjacent this method will throw <see cref="InvalidOperationException"/>.
+        /// instead.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
+        /// The type of boundary value the interval is based on.
         /// </typeparam>
-        /// <typeparam name="TData">
-        /// The type of data to associate with the interval.
-        /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to merge.
+        /// <param name="interval">
+        /// The first interval to compare.
         /// </param>
-        /// <param name="behavior">
-        /// The merge behavior, see <see cref="IntervalMergeBehavior"/> for more information.
+        /// <param name="other">
+        /// The second interval to compare.
         /// </param>
         /// <returns>
-        /// A collection of merged intervals.
+        /// A new <see cref="Interval{T}"/> containing the outermost boundaries of the two overlapping or adjacent
+        /// intervals.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The two intervals doesn't overlap and aren't adjacent.
+        /// </exception>
         /// <remarks>
-        /// <para>Note that the intervals must be sorted according to normal interval sort order.</para>
+        /// Note that if either or both interval is <c>null</c> this method will also throw <see cref="InvalidOperationException"/>.
         /// </remarks>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T, IInterval<T, TData>[]>> Merge<T, TData>(
-            this IEnumerable<IInterval<T, TData>> intervals, IntervalMergeBehavior behavior) where T : IComparable<T>
+        public static Interval<T> GetUnion<T>([NotNull] this IInterval<T> interval, [NotNull] IInterval<T> other)
+            where T : struct, IComparable<T>
         {
-            if (intervals == null)
-                throw new ArgumentNullException("intervals");
-
-            return InternalMerge<T, IInterval<T, TData>>(intervals, behavior);
+            var result = TryGetUnion(interval, other);
+            if (result == null)
+                throw new InvalidOperationException($"Unable to get the union of {interval} and {other} as they do not overlap nor are they adjacent");
+            return result;
         }
 
-        /// <summary>
-        /// Reduces the associated data by running it through a reduction function, returning the reduced results,
-        /// typically used to convert an array of intervals (from the slice function) into a number or other type
-        /// of value.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="IInterval{T}.Start"/> and
-        /// <see cref="IInterval{T}.End"/> properties.
-        /// </typeparam>
-        /// <typeparam name="TInput">
-        /// The type of data to associate with the input intervals.
-        /// </typeparam>
-        /// <typeparam name="TOutput">
-        /// The type of data to associate with the output intervals.
-        /// </typeparam>
-        /// <param name="intervals">
-        /// The intervals to reduce.
-        /// </param>
-        /// <param name="converter">
-        /// A <see cref="Converter{T1,T2}"/> that will converter the data from the input intervals in order to produce
-        /// the data to associate with the output intervals.
-        /// </param>
-        /// <returns>
-        /// A collection of new interval objects with the reduced data, but same start and end points.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="intervals"/> is <c>null</c>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="converter"/> is <c>null</c>.</para>
-        /// </exception>
-        public static IEnumerable<IInterval<T, TOutput>> Reduce<T, TInput, TOutput>(
-            this IEnumerable<IInterval<T, TInput>> intervals, Converter<TInput, TOutput> converter) where T : IComparable<T>
-        {
-            if (intervals == null)
-                throw new ArgumentNullException("intervals");
-            if (converter == null)
-                throw new ArgumentNullException("converter");
-
-            return InternalReduce(intervals, converter);
-        }
-
-        private static IEnumerable<IInterval<T, R[]>> InternalSlice<T, R>(this IEnumerable<R> intervals) where R : IInterval<T>
-            where T : IComparable<T>
-        {
-            R[] rangeArray = intervals.ToArray();
-            var window = new Heap<R>(new IntervalEndComparer<R, T>());
-
-            T windowStart = default(T);
-            int index = 0;
-            while (index < rangeArray.Length || window.Count > 0)
-            {
-                R first;
-                if (index < rangeArray.Length)
-                {
-                    // First grab all intervals that start at the same point as our current window
-                    if (window.Count == 0)
-                    {
-                        R r1 = rangeArray[index++];
-                        windowStart = r1.Start;
-                        window.Add(r1);
-                    }
-
-                    while (index < rangeArray.Length && rangeArray[index].Start.CompareTo(windowStart) == 0)
-                    {
-                        window.Add(rangeArray[index]);
-                        index++;
-                    }
-
-                    first = window[0];
-
-                    // Then, if there are more intervals available, see if the next one starts earlier
-                    // than the current window ends
-                    if (index < rangeArray.Length)
-                    {
-                        R next = rangeArray[index];
-                        if (next.Start.CompareTo(first.End) < 0)
-                        {
-                            yield return new Interval<T, R[]>(windowStart, next.Start, window.ToArray());
-                            windowStart = next.Start;
-
-                            // Since no interval falls out of the window, leave it as it is
-                            continue;
-                        }
-                    }
-                }
-
-                first = window[0];
-
-                // If we get here, then our current is the first one we need to handle
-                yield return new Interval<T, R[]>(windowStart, first.End, window.ToArray());
-                T windowEnd = first.End;
-
-                // Now remove all periods that are no longer relevant
-                while (window.Count > 0 && window[0].End.CompareTo(windowEnd) == 0)
-                    window.Pop();
-                windowStart = windowEnd;
-            }
-        }
-
-        private static IEnumerable<IInterval<T, R[]>> InternalMerge<T, R>(this IEnumerable<R> intervals, IntervalMergeBehavior behavior)
-            where R : IInterval<T> where T : IComparable<T>
-        {
-            var window = new List<R>();
-            T windowEnd = default(T);
-            foreach (R interval in intervals)
-            {
-                bool startNewWindowForThisRange = true;
-                if (window.Count == 0)
-                    startNewWindowForThisRange = false;
-                else
-                {
-                    int comparisonResult = interval.Start.CompareTo(windowEnd);
-                    if (comparisonResult < 0)
-                        startNewWindowForThisRange = false;
-                    else if (comparisonResult == 0 && behavior == IntervalMergeBehavior.OverlappingAndAdjacent)
-                        startNewWindowForThisRange = false;
-                }
-
-                if (startNewWindowForThisRange)
-                {
-                    if (window.Count > 0)
-                        yield return new Interval<T, R[]>(window[0].Start, windowEnd, window.ToArray());
-                    window.Clear();
-                }
-
-                window.Add(interval);
-                if (window.Count == 1)
-                    windowEnd = interval.End;
-                else if (interval.End.CompareTo(windowEnd) > 0)
-                    windowEnd = interval.End;
-            }
-
-            if (window.Count > 0)
-                yield return new Interval<T, R[]>(window[0].Start, windowEnd, window.ToArray());
-        }
-
-        private static IEnumerable<IInterval<T, TOutput>> InternalReduce<T, TInput, TOutput>(
-            IEnumerable<IInterval<T, TInput>> intervals, Converter<TInput, TOutput> converter) where T : IComparable<T>
-        {
-            foreach (var interval in intervals)
-                yield return new Interval<T, TOutput>(interval.Start, interval.End, converter(interval.Data));
-        }
-
-        /// <summary>
-        /// Creates a range with the specified <paramref name="start"/> and <paramref name="end"/> values.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of dimension to use for the <see cref="Interval{T}.Start"/>
-        /// and <see cref="Interval{T}.End"/> properties.
-        /// </typeparam>
-        /// <param name="start">
-        /// The start of this <see cref="Interval{T}"/>.
-        /// This value is considered to be part of the interval.
-        /// </param>
-        /// <param name="end">
-        /// The end of this <see cref="Interval{T}"/>.
-        /// This value is <b>not</b> considered to be part of the interval.
-        /// </param>
-        /// <returns>
-        /// The created <see cref="Interval{T}"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="end"/> is less than or equal to <paramref name="start"/>.</para>
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="start"/> is <c>null</c>.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="end"/> is <c>null</c>.</para>
-        /// </exception>
-        public static Interval<T> To<T>(this T start, T end) where T : IComparable<T>
-        {
-            return new Interval<T>(start, end);
-        }
-
-        #region Nested type: IntervalEndComparer
-
-        private class IntervalEndComparer<TInterval, T> : IComparer<TInterval>
-            where TInterval : IInterval<T> where T : IComparable<T>
-        {
-            #region IComparer<TInterval> Members
-
-            public int Compare(TInterval x, TInterval y)
-            {
-                return x.End.CompareTo(y.End);
-            }
-
-            #endregion
-        }
-
-        #endregion
+        private static T Min<T>(T a, T b) where T : struct, IComparable<T> => a.CompareTo(b) < 0 ? a : b;
+        private static T Max<T>(T a, T b) where T : struct, IComparable<T> => a.CompareTo(b) > 0 ? a : b;
     }
 }
