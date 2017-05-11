@@ -65,7 +65,7 @@ exit /B 0
 if errorlevel 1 goto error
 "%GIT_CONSOLE%" tag version/%VERSION%%SUFFIX%
 if errorlevel 1 goto error
-start "" "https://www.nuget.org/packages/%PROJECT%/"
+start "" "https://www.nuget.org/packages/%NUGETID%/"
 exit /B 0
 
 :NO_NUGET
