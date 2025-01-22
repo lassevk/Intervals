@@ -8,11 +8,11 @@ namespace Intervals;
 internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>>
     where TBoundary : struct, IComparable<TBoundary>
 {
-    private readonly List<Interval<TBoundary, TTag>> _intervals;
+    private readonly Interval<TBoundary, TTag>[] _intervals;
 
     public SliceEnumerator(IEnumerable<Interval<TBoundary, TTag>> intervals)
     {
-        _intervals = intervals.ToList();
+        _intervals = intervals.ToArray();
     }
 
     public IEnumerator<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>> GetEnumerator()
@@ -21,10 +21,10 @@ internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary
 
         var windowStart = default(TBoundary);
         int index = 0;
-        while (index < _intervals.Count || window.Count > 0)
+        while (index < _intervals.Length || window.Count > 0)
         {
             Interval<TBoundary, TTag> first;
-            if (index < _intervals.Count)
+            if (index < _intervals.Length)
             {
                 // First grab all intervals that start at the same point as our current window
                 if (window.Count == 0)
@@ -34,7 +34,7 @@ internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary
                     window.Add(r1);
                 }
 
-                while (index < _intervals.Count && _intervals[index].Start.CompareTo(windowStart) == 0)
+                while (index < _intervals.Length && _intervals[index].Start.CompareTo(windowStart) == 0)
                 {
                     window.Add(_intervals[index]);
                     index++;
@@ -44,7 +44,7 @@ internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary
 
                 // Then, if there are more intervals available, see if the next one starts earlier
                 // than the current window ends
-                if (index < _intervals.Count)
+                if (index < _intervals.Length)
                 {
                     Interval<TBoundary, TTag> next = _intervals[index];
                     if (next.Start.CompareTo(first.End) < 0)
