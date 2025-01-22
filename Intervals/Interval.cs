@@ -615,11 +615,36 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <inheritdoc />
     public override string ToString() => Tag is null ? $"[{Start}, {End})" : $"[{Start}, {End}) [{Tag}]";
 
-    public Interval<TBoundary, TNewTag> Select<TNewTag>(TNewTag tag) => new(Start, End, tag);
-    public Interval<TBoundary, TNewTag> Select<TNewTag>(Func<TTag, TNewTag> tagSelector) => new(Start, End, tagSelector(Tag));
-    public Interval<TNewBoundary, TTag> Select<TNewBoundary>(Func<TBoundary, TNewBoundary> boundarySelector)
-        where TNewBoundary : struct, IComparable<TNewBoundary>
-        => new(boundarySelector(Start), boundarySelector(End), Tag);
+    /// <summary>
+    /// Create a new interval with the same boundaries, but with a new tag.
+    /// </summary>
+    /// <param name="tag">
+    /// The tag of the new interval.
+    /// </param>
+    /// <typeparam name="TNewTag">
+    /// The type of tag to associate with the new interval.
+    /// </typeparam>
+    /// <returns>
+    /// The newly created interval, with the same <see cref="Start"/> and <see cref="End"/> values
+    /// as this interval, but with a new <paramref name="tag"/>.
+    /// </returns>
+    public Interval<TBoundary, TNewTag> WithTag<TNewTag>(TNewTag tag) => new(Start, End, tag);
+
+    /// <summary>
+    /// Create a new interval with the same boundaries, but with a new tag.
+    /// </summary>
+    /// <param name="tagSelector">
+    /// The function to call that will convert the tag of this interval to a new value
+    /// that will be associated with the new interval.
+    /// </param>
+    /// <typeparam name="TNewTag">
+    /// The type of tag to associate with the new interval.
+    /// </typeparam>
+    /// <returns>
+    /// The newly created interval, with the same <see cref="Start"/> and <see cref="End"/> values
+    /// as this interval, but with a new tag value from <paramref name="tagSelector"/>.
+    /// </returns>
+    public Interval<TBoundary, TNewTag> WithTag<TNewTag>(Func<TTag, TNewTag> tagSelector) => new(Start, End, tagSelector(Tag));
 
     private static TBoundary Min(TBoundary a, TBoundary b) => a.CompareTo(b) < 0 ? a : b;
     private static TBoundary Max(TBoundary a, TBoundary b) => a.CompareTo(b) > 0 ? a : b;
