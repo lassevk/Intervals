@@ -39,7 +39,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     {
         if (end.CompareTo(start) < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(end), $"end must be greater than start ({start}..{end})");
+            throw new ArgumentOutOfRangeException(nameof(end), $"end must be greater than or equal to start ({start}..{end})");
         }
 
         Start = start;
@@ -118,12 +118,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     public int CompareTo(Interval<TBoundary, TTag> other)
     {
         int startComparison = Start.CompareTo(other.Start);
-        if (startComparison != 0)
-        {
-            return startComparison;
-        }
-
-        return End.CompareTo(other.End);
+        return startComparison != 0 ? startComparison : End.CompareTo(other.End);
     }
 
     /// <summary>
