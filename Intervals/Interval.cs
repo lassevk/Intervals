@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace Intervals;
 
@@ -13,6 +15,7 @@ namespace Intervals;
 /// <typeparam name="TTag">
 /// The type of tag associated with this interval.
 /// </typeparam>
+[DebuggerDisplay("Interval [{Start}, {End}) [{Tag}]")]
 public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<TBoundary, TTag>>
     where TBoundary : struct, IComparable<TBoundary>
 {
@@ -31,6 +34,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <exception cref="ArgumentOutOfRangeException">
     /// <para><paramref name="start"/> has a higher value than <paramref name="end"/>.</para>
     /// </exception>
+    [JsonConstructor]
     public Interval(TBoundary start, TBoundary end, TTag tag = default!)
     {
         if (end.CompareTo(start) < 0)
@@ -46,17 +50,69 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <summary>
     /// The starting value of the interval. This value is considered to be part of the interval.
     /// </summary>
+    [JsonPropertyName("start")]
     public TBoundary Start { get; }
 
     /// <summary>
     /// The ending value of the interval. This value is not considered to be part of the interval.
     /// </summary>
+    [JsonPropertyName("end")]
     public TBoundary End { get; }
 
     /// <summary>
     /// The tag associated with this interval. Can be used to store references to objects relevant for this interval.
     /// </summary>
+    [JsonPropertyName("tag")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    // [DefaultValue(null)]
     public TTag Tag { get; }
+
+    /// <summary>
+    /// Implicitly convert a tuple containing start and end values, and a tag, to an interval.
+    /// </summary>
+    /// <param name="tuple">
+    /// The tuple, containing the start, end, and tag values.
+    /// </param>
+    /// <returns>
+    /// The interval constructed from the individual tuple values.
+    /// </returns>
+    public static implicit operator Interval<TBoundary, TTag>((TBoundary start, TBoundary end, TTag tag) tuple) => new(tuple.start, tuple.end, tuple.tag);
+
+    /// <summary>
+    /// Implicitly convert a tuple containing start and end values to an interval.
+    /// </summary>
+    /// <param name="tuple">
+    /// The tuple, containing the start and end values.
+    /// </param>
+    /// <returns>
+    /// The interval constructed from the individual tuple values.
+    /// </returns>
+    public static implicit operator Interval<TBoundary, TTag>((TBoundary start, TBoundary end) tuple) => new(tuple.start, tuple.end);
+
+    /// <summary>
+    /// Deconstruct this interval into separate boundary and tag variables.
+    /// </summary>
+    /// <param name="start">
+    /// The variable for the <see cref="Start"/> value.
+    /// </param>
+    /// <param name="end">
+    /// The variable for the <see cref="End"/> value.
+    /// </param>
+    /// <param name="tag">
+    /// The variable for the <see cref="Tag"/> value.
+    /// </param>
+    public void Deconstruct(out TBoundary start, out TBoundary end, out TTag tag) => (start, end, tag) = (Start, End, Tag);
+
+    /// <summary>
+    /// Deconstruct this interval into separate boundary variables.
+    /// </summary>
+    /// <param name="start">
+    /// The variable for the <see cref="Start"/> value.
+    /// </param>
+    /// <param name="end">
+    /// The variable for the <see cref="End"/> value.
+    /// </param>
+    public void Deconstruct(out TBoundary start, out TBoundary end) => (start, end) = (Start, End);
 
     /// <inheritdoc />
     public int CompareTo(Interval<TBoundary, TTag> other)
@@ -530,7 +586,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <returns>
     /// <c>true</c> if the <see cref="Start"/> property equals the <see cref="End"/> property.
     /// </returns>
-    public bool IsEmpty => Start.Equals(End);
+    public bool IsEmpty() => Start.Equals(End);
 
     /// <summary>
     /// Compares this interval to the other interval. Note that the tag is not relevant for comparison.
@@ -558,6 +614,12 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
 
     /// <inheritdoc />
     public override string ToString() => Tag is null ? $"[{Start}, {End})" : $"[{Start}, {End}) [{Tag}]";
+
+    public Interval<TBoundary, TNewTag> Select<TNewTag>(TNewTag tag) => new(Start, End, tag);
+    public Interval<TBoundary, TNewTag> Select<TNewTag>(Func<TTag, TNewTag> tagSelector) => new(Start, End, tagSelector(Tag));
+    public Interval<TNewBoundary, TTag> Select<TNewBoundary>(Func<TBoundary, TNewBoundary> boundarySelector)
+        where TNewBoundary : struct, IComparable<TNewBoundary>
+        => new(boundarySelector(Start), boundarySelector(End), Tag);
 
     private static TBoundary Min(TBoundary a, TBoundary b) => a.CompareTo(b) < 0 ? a : b;
     private static TBoundary Max(TBoundary a, TBoundary b) => a.CompareTo(b) > 0 ? a : b;
