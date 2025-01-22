@@ -153,40 +153,6 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <param name="other">
     /// The second interval to compare to this.
     /// </param>
-    /// <returns>
-    /// A new <see cref="Interval{TBoundary,TTag}"/> containing the overlapping part between the two intervals or
-    /// <c>null</c> if the two intervals does not overlap. The tags will be combined into a pair of tags.
-    /// </returns>
-    public Interval<TBoundary, TagPair<TTag, TOtherTag>>? TryGetOverlappingInterval<TOtherTag>(Interval<TBoundary, TOtherTag> other)
-    {
-        TBoundary start = Start;
-        if (other.Start.CompareTo(start) > 0)
-        {
-            start = other.Start;
-        }
-
-        TBoundary end = End;
-        if (other.End.CompareTo(end) < 0)
-        {
-            end = other.End;
-        }
-
-        if (start.CompareTo(end) >= 0)
-        {
-            return null;
-        }
-
-        return Interval.Create(start, end, new TagPair<TTag, TOtherTag>(Tag, other.Tag));
-    }
-
-    /// <summary>
-    /// Attempts to get the overlapping part between two intervals, meaning it will return a new interval that contains the portion
-    /// of the two intervals that are in common / overlap. If the two intervals does not overlap this method will return <c>null</c>
-    /// instead.
-    /// </summary>
-    /// <param name="other">
-    /// The second interval to compare to this.
-    /// </param>
     /// <param name="tagOperator">
     /// A function that will be called to combine the two tags involved into one for the resulting interval.
     /// </param>
@@ -251,35 +217,6 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
         }
 
         return Interval.Create(start, end, tag);
-    }
-
-    /// <summary>
-    /// Gets the overlapping part between two intervals, meaning it will return a new interval that contains the portion
-    /// of the two intervals that are in common / overlap. If the two intervals does not overlap this method will throw
-    /// <see cref="InvalidOperationException"/>.
-    /// instead.
-    /// </summary>
-    /// <param name="other">
-    /// The second interval to compare.
-    /// </param>
-    /// <returns>
-    /// A new <see cref="Interval{TBoundary,TTag}"/> containing the overlapping part between the two intervals. The tags will be combined.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">
-    /// The two intervals does not overlap.
-    /// </exception>
-    /// <remarks>
-    /// Note that if either or both interval is <c>null</c> this method will also throw <see cref="InvalidOperationException"/>.
-    /// </remarks>
-    public Interval<TBoundary, TagPair<TTag, TOtherTag>> GetOverlappingInterval<TOtherTag>(Interval<TBoundary, TOtherTag> other)
-    {
-        Interval<TBoundary, TagPair<TTag, TOtherTag>>? result = TryGetOverlappingInterval(other);
-        if (result == null)
-        {
-            throw new InvalidOperationException($"Unable to get overlapping interval between {this} and {other}");
-        }
-
-        return result.Value;
     }
 
     /// <summary>
@@ -370,35 +307,6 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <typeparam name="TOtherTag">
     /// The type of tag associated with the other interval.
     /// </typeparam>
-    /// <param name="other">
-    /// The second interval to compare.
-    /// </param>
-    /// <returns>
-    /// A new <see cref="Interval{TBoundary,TTag}"/> containing the outermost boundaries of the two overlapping or adjacent
-    /// intervals; or <c>null</c> if the two intervals does not overlap and aren't adjacent.
-    /// </returns>
-    /// <remarks>
-    /// Note that if either or both interval is <c>null</c> this method will also return <c>null</c>.
-    /// </remarks>
-    public Interval<TBoundary, TagPair<TTag, TOtherTag>>? TryGetUnion<TOtherTag>(Interval<TBoundary, TOtherTag> other)
-    {
-        if (!IsOverlapping(other) && !IsAdjacentTo(other))
-        {
-            return null;
-        }
-
-        return Interval.Create(Min(Start, other.Start), Max(End, other.End), new TagPair<TTag, TOtherTag>(Tag, other.Tag));
-    }
-
-    /// <summary>
-    /// Attempts to calculate the union of the overlapping or adjacent intervals, meaning it will return a new interval that
-    /// contains the outer boundaries of the two intervals combined. If the two intervals does not overlap
-    /// and aren't adjacent this method will return <c>null</c>.
-    /// instead.
-    /// </summary>
-    /// <typeparam name="TOtherTag">
-    /// The type of tag associated with the other interval.
-    /// </typeparam>
     /// <typeparam name="TResultTag">
     /// The type of tag to associate with the resulting interval.
     /// </typeparam>
@@ -459,39 +367,6 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
         }
 
         return Interval.Create(Min(Start, other.Start), Max(End, other.End), tag);
-    }
-
-    /// <summary>
-    /// Calculates the union of the overlapping or adjacent intervals, meaning it will return a new interval that
-    /// contains the outer boundaries of the two intervals combined. If the two intervals does not overlap
-    /// and aren't adjacent this method will throw <see cref="InvalidOperationException"/>.
-    /// instead.
-    /// </summary>
-    /// <typeparam name="TOtherTag">
-    /// The type of tag associated with the other interval.
-    /// </typeparam>
-    /// <param name="other">
-    /// The second interval to compare to this.
-    /// </param>
-    /// <returns>
-    /// A new <see cref="Interval{TBoundary,TTag}"/> containing the outermost boundaries of the two overlapping or adjacent
-    /// intervals.
-    /// </returns>
-    /// <exception cref="InvalidOperationException">
-    /// The two intervals doesn't overlap and aren't adjacent.
-    /// </exception>
-    /// <remarks>
-    /// Note that if either or both interval is <c>null</c> this method will also throw <see cref="InvalidOperationException"/>.
-    /// </remarks>
-    public Interval<TBoundary, TagPair<TTag, TOtherTag>> GetUnion<TOtherTag>(Interval<TBoundary, TOtherTag> other)
-    {
-        Interval<TBoundary, TagPair<TTag, TOtherTag>>? result = TryGetUnion(other);
-        if (result == null)
-        {
-            throw new InvalidOperationException($"Unable to get the union of {this} and {other} as they do not overlap nor are they adjacent");
-        }
-
-        return result.Value;
     }
 
     /// <summary>

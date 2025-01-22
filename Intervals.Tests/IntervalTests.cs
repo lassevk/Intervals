@@ -141,7 +141,7 @@ public class IntervalTests
         var interval1 = Interval.Create(0, 10);
         var interval2 = Interval.Create(15, 20);
 
-        Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2));
+        Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2, false));
     }
 
     [Test]
@@ -150,7 +150,7 @@ public class IntervalTests
         var interval1 = Interval.Create(0, 10);
         var interval2 = Interval.Create(10, 20);
 
-        Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2));
+        Assert.Throws<InvalidOperationException>(() => interval1.GetOverlappingInterval(interval2, false));
     }
 
     [Test]

@@ -103,7 +103,7 @@ public class IntervalExtensionsTests
         var a = Interval.Create(10, 20);
         var b = Interval.Create(25, 30);
 
-        Assert.Throws<InvalidOperationException>(() => a.GetUnion(b));
+        Assert.Throws<InvalidOperationException>(() => a.GetUnion(b, false));
     }
 
     [Test]
