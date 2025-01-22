@@ -1,37 +1,34 @@
 using System;
 using NUnit.Framework;
 
-namespace Intervals.Tests
+namespace Intervals.Tests;
+
+public class TaggedIntervalTests
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    public class TaggedIntervalTests
+    [Test]
+    public void Constructor_WithData_StoresDataIntoProperty()
     {
-        [Test]
-        public void Constructor_WithData_StoresDataIntoProperty()
-        {
-            var interval = new TaggedInterval<int>(0, 10, "test");
+        var interval = new Interval<int, string>(0, 10, "test");
 
-            Assert.That(interval.Tag, Is.EqualTo("test"));
-        }
+        Assert.That(interval.Tag, Is.EqualTo("test"));
+    }
 
-        [Test]
-        public void Create_WithTag_StoresTagIntoProperty()
-        {
-            var interval = TaggedInterval.Create(0, 10, "test");
+    [Test]
+    public void Create_WithTag_StoresTagIntoProperty()
+    {
+        var interval = Interval.Create(0, 10, "test");
 
-            Assert.That(interval.Tag, Is.EqualTo("test"));
-        }
+        Assert.That(interval.Tag, Is.EqualTo("test"));
+    }
 
-        [Test]
-        public void ToString_ContainsTag()
-        {
-            var tag = Guid.NewGuid().ToString();
-            var interval = TaggedInterval.Create(0, 10, tag);
+    [Test]
+    public void ToString_ContainsTag()
+    {
+        string tag = Guid.NewGuid().ToString();
+        var interval = Interval.Create(0, 10, tag);
 
-            var output = interval.ToString();
+        string output = interval.ToString();
 
-            Assert.That(output, Is.StringContaining(tag));
-        }
+        Assert.That(output, Does.Contain(tag));
     }
 }

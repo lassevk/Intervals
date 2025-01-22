@@ -1,43 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Intervals.Tests
+namespace Intervals.Tests;
+
+public class TestCaseTestsBase
 {
-    public class TestCaseTestsBase
+    protected Interval<int, bool>[] GetIntervals(string input)
     {
-        protected IInterval<int>[] GetIntervals(string input)
+        if (input == null)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
+            throw new ArgumentNullException(nameof(input));
+        }
 
-            var result = new List<IInterval<int>>();
-            int index = 0;
-            int intervalStart = -1;
-            int position = 0;
+        var result = new List<Interval<int, bool>>();
+        int index = 0;
+        int intervalStart = -1;
+        int position = 0;
 
-            while (index < input.Length)
+        while (index < input.Length)
+        {
+            if (input[index] == '?')
             {
-                if (input[index] == '?')
-                    position = -1; // will be increased to 0 at end of loop
-                else if (input[index] == '|')
+                position = -1; // will be increased to 0 at end of loop
+            }
+            else if (input[index] == '|')
+            {
+                if (intervalStart == -1)
                 {
-                    if (intervalStart == -1)
+                    intervalStart = position;
+                }
+                else
+                {
+                    result.Add(new Interval<int, bool>(intervalStart, position));
+                    if (index + 1 < input.Length && input[index + 1] == '-')
+                    {
                         intervalStart = position;
+                    }
                     else
                     {
-                        result.Add(new Interval<int>(intervalStart, position));
-                        if (index + 1 < input.Length && input[index + 1] == '-')
-                            intervalStart = position;
-                        else
-                            intervalStart = -1;
+                        intervalStart = -1;
                     }
                 }
-
-                index++;
-                position++;
             }
 
-            return result.ToArray();
+            index++;
+            position++;
         }
+
+        return result.ToArray();
     }
 }

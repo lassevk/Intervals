@@ -1,72 +1,71 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
 
-using static Intervals.Conditionals;
+namespace Intervals;
 
-namespace Intervals
+internal sealed class MergeEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>>
+    where TBoundary : struct, IComparable<TBoundary>
 {
-    internal sealed class MergeEnumerator<T> : IEnumerable<Slice<T>>
-        where T : struct, IComparable<T>
+    private readonly IEnumerable<Interval<TBoundary, TTag>> _intervals;
+    private readonly IntervalMergeBehavior _behavior;
+
+    public MergeEnumerator(IEnumerable<Interval<TBoundary, TTag>> intervals, IntervalMergeBehavior behavior)
     {
-        [NotNull, ItemNotNull]
-        private readonly IEnumerable<IInterval<T>> _Intervals;
-        private readonly IntervalMergeBehavior _Behavior;
+        _intervals = intervals;
+        _behavior = behavior;
+    }
 
-        public MergeEnumerator([NotNull, ItemNotNull] IEnumerable<IInterval<T>>  intervals, IntervalMergeBehavior behavior)
+    public IEnumerator<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>> GetEnumerator()
+    {
+        var window = new List<Interval<TBoundary, TTag>>();
+        TBoundary windowEnd = default;
+        foreach (Interval<TBoundary, TTag> interval in _intervals)
         {
-            _Intervals = intervals;
-            _Behavior = behavior;
-        }
-
-        [SuppressMessage("ReSharper", "CyclomaticComplexity")]
-        public IEnumerator<Slice<T>> GetEnumerator()
-        {
-            var window = new List<IInterval<T>>();
-            T windowEnd = default(T);
-            foreach (IInterval<T> interval in _Intervals)
+            bool startNewWindowForThisRange = true;
+            if (window.Count == 0)
             {
-                bool startNewWindowForThisRange = true;
-                if (window.Count == 0)
+                startNewWindowForThisRange = false;
+            }
+            else
+            {
+                int comparisonResult = interval.Start.CompareTo(windowEnd);
+                if (comparisonResult < 0)
+                {
                     startNewWindowForThisRange = false;
-                else
-                {
-                    int comparisonResult = interval.Start.CompareTo(windowEnd);
-                    if (comparisonResult < 0)
-                        startNewWindowForThisRange = false;
-                    else if (comparisonResult == 0 && _Behavior == IntervalMergeBehavior.OverlappingAndAdjacent)
-                        startNewWindowForThisRange = false;
                 }
-
-                if (startNewWindowForThisRange)
+                else if (comparisonResult == 0 && _behavior == IntervalMergeBehavior.OverlappingAndAdjacent)
                 {
-                    if (window.Count > 0)
-                    {
-                        assume(window[0] != null);
-                        yield return new Slice<T>(window[0].Start, windowEnd, window.ToArray());
-                    }
-                    window.Clear();
+                    startNewWindowForThisRange = false;
                 }
-
-                window.Add(interval);
-                if (window.Count == 1)
-                    windowEnd = interval.End;
-                else if (interval.End.CompareTo(windowEnd) > 0)
-                    windowEnd = interval.End;
             }
 
-            if (window.Count > 0)
+            if (startNewWindowForThisRange)
             {
-                assume(window[0] != null);
-                yield return new Slice<T>(window[0].Start, windowEnd, window.ToArray());
+                if (window.Count > 0)
+                {
+                    yield return new Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>(window[0].Start, windowEnd, window.ToArray());
+                }
+
+                window.Clear();
+            }
+
+            window.Add(interval);
+            if (window.Count == 1)
+            {
+                windowEnd = interval.End;
+            }
+            else if (interval.End.CompareTo(windowEnd) > 0)
+            {
+                windowEnd = interval.End;
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        if (window.Count > 0)
         {
-            return GetEnumerator();
+            yield return new Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>(window[0].Start, windowEnd, window.ToArray());
         }
     }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

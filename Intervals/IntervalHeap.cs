@@ -1,108 +1,99 @@
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
-using static Intervals.Conditionals;
+namespace Intervals;
 
-namespace Intervals
+internal sealed class IntervalHeap<TBoundary, TTag>
+    where TBoundary : struct, IComparable<TBoundary>
 {
-    internal sealed class IntervalHeap<T>
-        where T : struct, IComparable<T>
+    private readonly List<Interval<TBoundary, TTag>> _elements = new();
+
+    public Interval<TBoundary, TTag> this[int index] => _elements[index];
+
+    public int Count => _elements.Count;
+
+    public void Add(Interval<TBoundary, TTag> interval)
     {
-        [NotNull, ItemNotNull]
-        private readonly List<IInterval<T>> _Elements = new List<IInterval<T>>();
+        _elements.Add(interval);
+        SiftDown(0, _elements.Count - 1);
+    }
 
-        [NotNull]
-        // ReSharper disable once AssignNullToNotNullAttribute
-        public IInterval<T> this[int index] => _Elements[index];
+    public Interval<TBoundary, TTag>[] ToArray() => _elements.ToArray();
 
-        public int Count => _Elements.Count;
-
-        public void Add([NotNull] IInterval<T> interval)
+    public Interval<TBoundary, TTag> Pop()
+    {
+        if (_elements.Count == 0)
         {
-            _Elements.Add(interval);
-            SiftDown(0, _Elements.Count - 1);
+            throw new InvalidOperationException("Cannot pop from the heap, it is currently empty");
         }
 
-        [NotNull, ItemNotNull]
-        public IInterval<T>[] ToArray()
+        Interval<TBoundary, TTag> lastElement = _elements[^1];
+        _elements.RemoveAt(_elements.Count - 1);
+        Interval<TBoundary, TTag> returnItem;
+        if (_elements.Count > 0)
         {
-            return _Elements.ToArray();
+            returnItem = _elements[0];
+            _elements[0] = lastElement;
+            SiftUp(0);
+        }
+        else
+        {
+            returnItem = lastElement;
         }
 
-        [NotNull]
-        public IInterval<T> Pop()
+        return returnItem;
+    }
+
+    private void SiftDown(int startPos, int pos)
+    {
+        Interval<TBoundary, TTag> newItem = _elements[pos];
+
+        while (pos > startPos)
         {
-            if (_Elements.Count == 0)
-                throw new InvalidOperationException("Cannot pop from the heap, it is currently empty");
+            int parentPos = (pos - 1) / 2;
+            Interval<TBoundary, TTag> parent = _elements[parentPos];
 
-            IInterval<T> lastElement = _Elements[_Elements.Count - 1];
-            assume(lastElement != null);
-
-            _Elements.RemoveAt(_Elements.Count - 1);
-            IInterval<T> returnItem;
-            if (_Elements.Count > 0)
+            if (parent.End.CompareTo(newItem.End) <= 0)
             {
-                returnItem = _Elements[0];
-                assume(returnItem != null);
-                _Elements[0] = lastElement;
-                SiftUp(0);
-            }
-            else
-                returnItem = lastElement;
-
-            return returnItem;
-        }
-
-        private void SiftDown(int startPos, int pos)
-        {
-            IInterval<T> newItem = _Elements[pos];
-            assume(newItem != null);
-
-            while (pos > startPos)
-            {
-                int parentPos = (pos - 1) / 2;
-                IInterval<T> parent = _Elements[parentPos];
-
-                assume(parent != null);
-                if (parent.End.CompareTo(newItem.End) <= 0)
-                    break;
-                _Elements[pos] = parent;
-                pos = parentPos;
+                break;
             }
 
-            _Elements[pos] = newItem;
+            _elements[pos] = parent;
+            pos = parentPos;
         }
 
-        private void SiftUp(int pos)
+        _elements[pos] = newItem;
+    }
+
+    private void SiftUp(int pos)
+    {
+        int endPos = Count;
+        int startPos = pos;
+        Interval<TBoundary, TTag> newItem = _elements[pos];
+
+        // Bubble up the smaller child until hitting a leaf.
+        int childPos = 2 * pos + 1;
+
+        while (childPos < endPos)
         {
-            int endPos = Count;
-            int startPos = pos;
-            IInterval<T> newItem = _Elements[pos];
+            // Set childpos to index of smaller child.
+            int rightPos = childPos + 1;
 
-            // Bubble up the smaller child until hitting a leaf.
-            int childPos = 2 * pos + 1;
-
-            while (childPos < endPos)
+            if (rightPos < endPos)
             {
-                // Set childpos to index of smaller child.
-                int rightPos = childPos + 1;
-
-                if (rightPos < endPos)
+                if (_elements[rightPos].End.CompareTo(_elements[childPos].End) <= 0)
                 {
-                    assume(_Elements[rightPos] != null && _Elements[childPos] != null);
-                    if (_Elements[rightPos].End.CompareTo(_Elements[childPos].End) <= 0)
-                        childPos = rightPos;
+                    childPos = rightPos;
                 }
-
-                // Move the smaller child up.
-                _Elements[pos] = _Elements[childPos];
-                pos = childPos;
-                childPos = 2 * pos + 1;
             }
 
-            _Elements[pos] = newItem;
-            SiftDown(startPos, pos);
+            // Move the smaller child up.
+            _elements[pos] = _elements[childPos];
+            pos = childPos;
+            childPos = 2 * pos + 1;
         }
+
+        _elements[pos] = newItem;
+        SiftDown(startPos, pos);
     }
 }

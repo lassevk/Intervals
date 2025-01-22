@@ -1,34 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
-    <Description>Interval Calculation Class Library</Description>
-    <PackageId>intervals-lvk</PackageId>
-    <Version>2.0.0</Version>
-    <Authors>Lasse Vågsæther Karlsen</Authors>
-    <Company>Lasse Vågsæther Karlsen</Company>
-    <Product>Intervals.LVK</Product>
-    <Copyright>Copyright (C) 2010-2017 Lasse Vågsæther Karlsen, All rights reserved.</Copyright>
-    <PackageLicenseUrl>https://github.com/lassevk/Intervals/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/lassevk/Intervals</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/lassevk/Intervals.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>Lasse V. Karlsen.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
+        
+        <!--
+        <Description>Interval Calculation Class Library</Description>
+        <PackageId>intervals-lvk</PackageId>
+        <Version>2.0.0</Version>
+        <Authors>Lasse Vågsæther Karlsen</Authors>
+        <Company>Lasse Vågsæther Karlsen</Company>
+        <Product>Intervals.LVK</Product>
+        <Copyright>Copyright (C) 2010-2017 Lasse Vågsæther Karlsen, All rights reserved.</Copyright>
+        <PackageLicenseUrl>https://github.com/lassevk/Intervals/blob/master/LICENSE.md</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/lassevk/Intervals</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/lassevk/Intervals.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>Lasse V. Karlsen.snk</AssemblyOriginatorKeyFile>
+        -->
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.0\.xml</DocumentationFile>
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <TreatSpecificWarningsAsErrors />
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_0;JETBRAINS_ANNOTATIONS</DefineConstants>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\net9.0\Intervals.xml</DocumentationFile>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <TreatSpecificWarningsAsErrors />
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <TreatSpecificWarningsAsErrors />
-    <DocumentationFile>bin\Release\netstandard1.0\.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <TreatSpecificWarningsAsErrors />
+        <DocumentationFile>bin\Release\net9.0\Intervals.xml</DocumentationFile>
+    </PropertyGroup>
 
 </Project>
