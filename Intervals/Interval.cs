@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json.Serialization;
 
 namespace Intervals;
@@ -17,7 +18,7 @@ namespace Intervals;
 /// </typeparam>
 [DebuggerDisplay("Interval [{Start}, {End}) [{Tag}]")]
 public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<TBoundary, TTag>>
-    where TBoundary : struct, IComparable<TBoundary>
+    where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
 {
     /// <summary>
     /// Constructs a new instance of <see cref="Interval{TBoundary,TTag}"/>.
@@ -37,7 +38,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     [JsonConstructor]
     public Interval(TBoundary start, TBoundary end, TTag tag = default!)
     {
-        if (end.CompareTo(start) < 0)
+        if (end < start)
         {
             throw new ArgumentOutOfRangeException(nameof(end), $"end must be greater than or equal to start ({start}..{end})");
         }
@@ -64,6 +65,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// </summary>
     [JsonPropertyName("tag")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+
     // [DefaultValue(null)]
     public TTag Tag { get; }
 
@@ -131,7 +133,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <c>true</c> if the <paramref name="value"/> is considered to be part of the interval,
     /// otherwise, <c>false</c>.
     /// </returns>
-    public bool Contains(TBoundary value) => Start.CompareTo(value) <= 0 && End.CompareTo(value) > 0;
+    public bool Contains(TBoundary value) => Start <= value && value < End;
 
     /// <summary>
     /// Determines if the two intervals overlap. Overlap means that there must exist at least one value that
@@ -143,7 +145,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <returns>
     /// <c>true</c> if the two intervals overlap; otherwise <c>false</c>.
     /// </returns>
-    public bool IsOverlapping<TOtherTag>(Interval<TBoundary, TOtherTag> other) => Start.CompareTo(other.End) < 0 && End.CompareTo(other.Start) > 0;
+    public bool IsOverlapping<TOtherTag>(Interval<TBoundary, TOtherTag> other) => Start < other.End && End > other.Start;
 
     /// <summary>
     /// Attempts to get the overlapping part between two intervals, meaning it will return a new interval that contains the portion
@@ -163,18 +165,18 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     public Interval<TBoundary, TResultTag>? TryGetOverlappingInterval<TOtherTag, TResultTag>(Interval<TBoundary, TOtherTag> other, Func<TTag, TOtherTag, TResultTag> tagOperator)
     {
         TBoundary start = Start;
-        if (other.Start.CompareTo(start) > 0)
+        if (other.Start > start)
         {
             start = other.Start;
         }
 
         TBoundary end = End;
-        if (other.End.CompareTo(end) < 0)
+        if (other.End < end)
         {
             end = other.End;
         }
 
-        if (start.CompareTo(end) >= 0)
+        if (start >= end)
         {
             return null;
         }
@@ -200,18 +202,18 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     public Interval<TBoundary, TResultTag>? TryGetOverlappingInterval<TOtherTag, TResultTag>(Interval<TBoundary, TOtherTag> other, TResultTag tag)
     {
         TBoundary start = Start;
-        if (other.Start.CompareTo(start) > 0)
+        if (other.Start > start)
         {
             start = other.Start;
         }
 
         TBoundary end = End;
-        if (other.End.CompareTo(end) < 0)
+        if (other.End < end)
         {
             end = other.End;
         }
 
-        if (start.CompareTo(end) >= 0)
+        if (start >= end)
         {
             return null;
         }
@@ -468,7 +470,7 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// <c>true</c> if the <see cref="Start"/> and <see cref="End"/> properties of the two intervals are equal;
     /// otherwise, <c>false</c>.
     /// </returns>
-    public bool Equals(Interval<TBoundary, TTag> other) => Start.Equals(other.Start) && End.Equals(other.End);
+    public bool Equals(Interval<TBoundary, TTag> other) => Start == other.Start && End == other.End;
 
     /// <inheritdoc />
     public override int GetHashCode()
@@ -516,6 +518,6 @@ public readonly record struct Interval<TBoundary, TTag> : IComparable<Interval<T
     /// </returns>
     public Interval<TBoundary, TNewTag> WithTag<TNewTag>(Func<TTag, TNewTag> tagSelector) => new(Start, End, tagSelector(Tag));
 
-    private static TBoundary Min(TBoundary a, TBoundary b) => a.CompareTo(b) < 0 ? a : b;
-    private static TBoundary Max(TBoundary a, TBoundary b) => a.CompareTo(b) > 0 ? a : b;
+    private static TBoundary Min(TBoundary a, TBoundary b) => a < b ? a : b;
+    private static TBoundary Max(TBoundary a, TBoundary b) => a > b ? a : b;
 }

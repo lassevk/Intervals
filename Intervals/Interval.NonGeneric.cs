@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace Intervals;
 
@@ -26,7 +27,7 @@ public static class Interval
     /// The newly constructed interval.
     /// </returns>
     public static Interval<TBoundary, bool> Create<TBoundary>(TBoundary start, TBoundary end)
-        where TBoundary : struct, IComparable<TBoundary>
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
         => new(start, end, true);
 
     /// <summary>
@@ -54,6 +55,6 @@ public static class Interval
     /// The newly constructed interval.
     /// </returns>
     public static Interval<TBoundary, TTag> Create<TBoundary, TTag>(TBoundary start, TBoundary end, TTag tag)
-        where TBoundary : struct, IComparable<TBoundary>
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
         => new(start, end, tag);
 }

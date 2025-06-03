@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Intervals;
 
 internal sealed class IntervalHeap<TBoundary, TTag>
-    where TBoundary : struct, IComparable<TBoundary>
+    where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
 {
     private readonly List<Interval<TBoundary, TTag>> _elements = new();
 
@@ -53,7 +54,7 @@ internal sealed class IntervalHeap<TBoundary, TTag>
             int parentPos = (pos - 1) / 2;
             Interval<TBoundary, TTag> parent = _elements[parentPos];
 
-            if (parent.End.CompareTo(newItem.End) <= 0)
+            if (parent.End <= newItem.End)
             {
                 break;
             }
@@ -81,7 +82,7 @@ internal sealed class IntervalHeap<TBoundary, TTag>
 
             if (rightPos < endPos)
             {
-                if (_elements[rightPos].End.CompareTo(_elements[childPos].End) <= 0)
+                if (_elements[rightPos].End <= _elements[childPos].End)
                 {
                     childPos = rightPos;
                 }

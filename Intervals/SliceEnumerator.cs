@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Intervals;
 
 internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>>
-    where TBoundary : struct, IComparable<TBoundary>
+    where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
 {
     private readonly Interval<TBoundary, TTag>[] _intervals;
 
@@ -34,7 +35,7 @@ internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary
                     window.Add(r1);
                 }
 
-                while (index < _intervals.Length && _intervals[index].Start.CompareTo(windowStart) == 0)
+                while (index < _intervals.Length && _intervals[index].Start == windowStart)
                 {
                     window.Add(_intervals[index]);
                     index++;
@@ -47,7 +48,7 @@ internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary
                 if (index < _intervals.Length)
                 {
                     Interval<TBoundary, TTag> next = _intervals[index];
-                    if (next.Start.CompareTo(first.End) < 0)
+                    if (next.Start < first.End)
                     {
                         yield return new Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>(windowStart, next.Start, window.ToArray());
 
@@ -67,7 +68,7 @@ internal class SliceEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary
             TBoundary windowEnd = first.End;
 
             // Now remove all periods that are no longer relevant
-            while (window.Count > 0 && window[0].End.CompareTo(windowEnd) == 0)
+            while (window.Count > 0 && window[0].End == windowEnd)
             {
                 window.Pop();
             }

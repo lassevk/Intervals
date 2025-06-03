@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Intervals;
 
 internal sealed class MergeEnumerator<TBoundary, TTag> : IEnumerable<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>>
-    where TBoundary : struct, IComparable<TBoundary>
+    where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
 {
     private readonly IEnumerable<Interval<TBoundary, TTag>> _intervals;
     private readonly IntervalMergeBehavior _behavior;
@@ -55,7 +56,7 @@ internal sealed class MergeEnumerator<TBoundary, TTag> : IEnumerable<Interval<TB
             {
                 windowEnd = interval.End;
             }
-            else if (interval.End.CompareTo(windowEnd) > 0)
+            else if (interval.End > windowEnd)
             {
                 windowEnd = interval.End;
             }

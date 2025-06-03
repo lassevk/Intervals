@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Intervals;
 
@@ -35,8 +36,9 @@ public static class IntervalExtensions
     /// <paramref name="intervals"/> is <c>null</c>.
     /// </exception>
     public static IEnumerable<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>> Slice<TBoundary, TTag>(
-        this IEnumerable<Interval<TBoundary, TTag>> intervals, bool isAlreadyOrdered = false)
-        where TBoundary : struct, IComparable<TBoundary>
+        this IEnumerable<Interval<TBoundary, TTag>> intervals,
+        bool isAlreadyOrdered = false)
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
     {
         if (intervals == null)
         {
@@ -74,8 +76,9 @@ public static class IntervalExtensions
     /// <paramref name="intervals"/> is <c>null</c>.
     /// </exception>
     public static IEnumerable<Interval<TBoundary, IReadOnlyList<Interval<TBoundary, TTag>>>> Merge<TBoundary, TTag>(
-        this IEnumerable<Interval<TBoundary, TTag>> intervals, IntervalMergeBehavior behavior = IntervalMergeBehavior.Default)
-        where TBoundary : struct, IComparable<TBoundary>
+        this IEnumerable<Interval<TBoundary, TTag>> intervals,
+        IntervalMergeBehavior behavior = IntervalMergeBehavior.Default)
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
     {
         if (intervals == null)
         {
@@ -104,7 +107,7 @@ public static class IntervalExtensions
     /// <para><paramref name="start"/> has a higher value than <paramref name="end"/>.</para>
     /// </exception>
     public static Interval<TBoundary, bool> IntervalTo<TBoundary>(this TBoundary start, TBoundary end)
-        where TBoundary : struct, IComparable<TBoundary>
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
         => new(start, end, true);
 
     /// <summary>
@@ -132,6 +135,6 @@ public static class IntervalExtensions
     /// <para><paramref name="start"/> has a higher value than <paramref name="end"/>.</para>
     /// </exception>
     public static Interval<TBoundary, TTag> IntervalTo<TBoundary, TTag>(this TBoundary start, TBoundary end, TTag tag)
-        where TBoundary : struct, IComparable<TBoundary>
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
         => new(start, end, tag);
 }
