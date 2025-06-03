@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Intervals;
 
@@ -51,6 +52,72 @@ public static class IntervalExtensions
         }
 
         return new SliceEnumerator<TBoundary, TTag>(intervals);
+    }
+
+    /// <summary>
+    /// Processes slices of intervals from the given collection based on their boundaries and invokes the specified action for each slice.
+    /// </summary>
+    /// <typeparam name="TBoundary">
+    /// The type of boundary value the intervals are based on.
+    /// </typeparam>
+    /// <typeparam name="TTag">
+    /// The type of tag associated with the intervals.
+    /// </typeparam>
+    /// <param name="intervals">
+    /// The collection of intervals to slice.
+    /// </param>
+    /// <param name="processSlice">
+    /// The action to execute for each slice, receiving the start and end boundaries of the slice and the corresponding span of intervals.
+    /// </param>
+    /// <param name="behavior">
+    /// The merge behavior determining how adjacent or overlapping intervals are processed. The default behavior is <c>OverlappingAndAdjacent</c>.
+    /// </param>
+    public static void Slice<TBoundary, TTag>(this ReadOnlySpan<Interval<TBoundary, TTag>> intervals, Action<TBoundary, TBoundary, ReadOnlySpan<Interval<TBoundary, TTag>>> processSlice,
+        IntervalMergeBehavior behavior = IntervalMergeBehavior.Default)
+        where TBoundary : struct, IComparisonOperators<TBoundary, TBoundary, bool>, IComparable<TBoundary>
+    {
+        var window = new List<Interval<TBoundary, TTag>>();
+        TBoundary windowEnd = default;
+        foreach (Interval<TBoundary, TTag> interval in intervals)
+        {
+            bool startNewWindowForThisRange = true;
+            if (window.Count == 0)
+            {
+                startNewWindowForThisRange = false;
+            }
+            else
+            {
+                if (interval.Start < windowEnd)
+                {
+                    startNewWindowForThisRange = false;
+                }
+                else if (interval.Start == windowEnd && behavior == IntervalMergeBehavior.OverlappingAndAdjacent)
+                {
+                    startNewWindowForThisRange = false;
+                }
+            }
+
+            if (startNewWindowForThisRange)
+            {
+                if (window.Count > 0)
+                {
+                    processSlice(window[0].Start, windowEnd, CollectionsMarshal.AsSpan(window));
+                }
+
+                window.Clear();
+            }
+
+            window.Add(interval);
+            if (window.Count == 1 || interval.End > windowEnd)
+            {
+                windowEnd = interval.End;
+            }
+        }
+
+        if (window.Count > 0)
+        {
+            processSlice(window[0].Start, windowEnd, CollectionsMarshal.AsSpan(window));
+        }
     }
 
     /// <summary>
